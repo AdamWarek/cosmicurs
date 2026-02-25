@@ -1,0 +1,394 @@
+/* Cosmos — Space theme (from images/design-palette.txt & cosmos-website-plan.md) */
+:root {
+  --bg-main: #0a0a1a;
+  --text-primary: #ffffff;
+  --accent-gold: #f0c040;
+  --accent-blue: #4fc3f7;
+  --bg-nav: rgba(10, 10, 26, 0.92);
+  --card-bg: rgba(79, 195, 247, 0.06);
+  --card-border: rgba(79, 195, 247, 0.2);
+  --font-heading: 'Orbitron', sans-serif;
+  --font-body: 'Lato', sans-serif;
+  --transition-fast: 0.2s ease;
+  --transition-smooth: 0.35s ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  margin: 0;
+  font-family: var(--font-body);
+  font-weight: 400;
+  color: var(--text-primary);
+  background-color: var(--bg-main);
+  line-height: 1.6;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ----- Header & Nav ----- */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100;
+  background: var(--bg-nav);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid rgba(79, 195, 247, 0.15);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem;
+}
+
+.nav-logo {
+  font-family: var(--font-heading);
+  font-weight: 700;
+  font-size: 1.35rem;
+  color: var(--accent-gold);
+  text-decoration: none;
+  letter-spacing: 0.05em;
+}
+
+.nav-logo:hover {
+  color: var(--accent-blue);
+}
+
+.nav-links {
+  display: flex;
+  gap: 0.25rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.nav-link {
+  display: block;
+  padding: 0.5rem 1rem;
+  color: var(--text-primary);
+  text-decoration: none;
+  font-weight: 400;
+  border-radius: 4px;
+  transition: color var(--transition-fast), background var(--transition-fast);
+}
+
+.nav-link:hover,
+.nav-link.is-active {
+  color: var(--accent-gold);
+}
+
+.nav-link.is-active {
+  background: rgba(240, 192, 64, 0.12);
+}
+
+/* Mobile nav toggle */
+.nav-toggle {
+  display: none;
+  flex-direction: column;
+  justify-content: center;
+  gap: 5px;
+  width: 40px;
+  height: 40px;
+  padding: 0;
+  border: 1px solid var(--card-border);
+  background: transparent;
+  color: var(--text-primary);
+  border-radius: 4px;
+  cursor: pointer;
+  transition: border-color var(--transition-fast);
+}
+
+.nav-toggle:hover {
+  border-color: var(--accent-blue);
+}
+
+.nav-toggle-bar {
+  display: block;
+  width: 22px;
+  height: 2px;
+  margin: 0 auto;
+  background: currentColor;
+  transition: transform var(--transition-smooth), opacity var(--transition-smooth);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(1) {
+  transform: translateY(7px) rotate(45deg);
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(2) {
+  opacity: 0;
+}
+
+.nav-toggle[aria-expanded="true"] .nav-toggle-bar:nth-child(3) {
+  transform: translateY(-7px) rotate(-45deg);
+}
+
+@media (max-width: 768px) {
+  .nav-toggle {
+    display: flex;
+  }
+
+  .nav-links {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    right: 0;
+    flex-direction: column;
+    background: var(--bg-nav);
+    border-bottom: 1px solid var(--card-border);
+    padding: 0.5rem;
+    gap: 0;
+    max-height: 0;
+    overflow: hidden;
+    opacity: 0;
+    transition: max-height var(--transition-smooth), opacity var(--transition-smooth);
+  }
+
+  .nav-links.is-open {
+    max-height: 320px;
+    opacity: 1;
+  }
+
+  .nav-link {
+    padding: 0.75rem 1rem;
+  }
+}
+
+/* ----- Hero ----- */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  overflow: hidden;
+  background-image: url('../images/backgrounds/stars.jpg');
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+/* Central solar system using real images */
+.solar-system {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: min(216vmin, 1560px);
+  height: min(216vmin, 1560px);
+  transform: translate(-50%, -55%);
+  z-index: 1;
+}
+
+.orbit {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.14);
+  transform: translate(-50%, -50%);
+}
+
+.orbit-1 { width: 22%; height: 22%; }
+.orbit-2 { width: 32%; height: 32%; }
+.orbit-3 { width: 42%; height: 42%; }
+.orbit-4 { width: 52%; height: 52%; }
+.orbit-5 { width: 62%; height: 62%; }
+.orbit-6 { width: 72%; height: 72%; }
+.orbit-7 { width: 82%; height: 82%; }
+.orbit-8 { width: 92%; height: 92%; }
+
+.sun {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 26%;
+  height: 26%;
+  transform: translate(-50%, -50%);
+}
+
+.sun img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+  box-shadow:
+    0 0 40px rgba(255, 193, 7, 0.9),
+    0 0 90px rgba(255, 152, 0, 0.6);
+}
+
+.planet {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: block;
+  box-shadow: 0 0 10px rgba(79, 195, 247, 0.6);
+  transition: transform var(--transition-fast), box-shadow var(--transition-fast);
+}
+
+.planet img {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  object-fit: cover;
+}
+
+.planet:hover {
+  transform: translate(-50%, -50%) scale(1.25);
+  box-shadow: 0 0 20px rgba(79, 195, 247, 0.9);
+}
+
+/* Planets arranged along orbits to the right of the sun, sized to better fill their space */
+.planet-mercury { top: 50%; left: 62%; width: 7%;  height: 7%;  }
+.planet-venus   { top: 42%; left: 68%; width: 9%;  height: 9%;  }
+.planet-earth   { top: 58%; left: 70%; width: 9%;  height: 9%;  }
+.planet-mars    { top: 35%; left: 74%; width: 7%;  height: 7%;  }
+.planet-jupiter { top: 65%; left: 78%; width: 15%; height: 15%; }
+.planet-saturn  { top: 30%; left: 82%; width: 13%; height: 13%; }
+.planet-uranus  { top: 70%; left: 86%; width: 10%; height: 10%; }
+.planet-neptune { top: 26%; left: 90%; width: 10%; height: 10%; }
+
+.hero-footer {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2;
+  padding: 0.75rem 1.5rem;
+  text-align: center;
+  background: linear-gradient(to top, rgba(10, 10, 26, 0.95), transparent);
+}
+
+.hero-cta {
+  display: inline-block;
+  padding: 0.6rem 1.5rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.85rem;
+  letter-spacing: 0.05em;
+  color: var(--bg-main);
+  background: var(--accent-gold);
+  border-radius: 4px;
+  text-decoration: none;
+  transition: background var(--transition-fast), transform var(--transition-fast);
+}
+
+.hero-cta:hover {
+  background: var(--accent-blue);
+  color: var(--text-primary);
+  transform: scale(1.03);
+}
+
+@media (max-width: 600px) {
+  .solar-system {
+    transform: translate(-50%, -52%);
+  }
+}
+
+/* ----- Content sections ----- */
+.content-section {
+  padding: 3rem 1.5rem;
+}
+
+.container {
+  max-width: 1000px;
+  margin: 0 auto;
+}
+
+.intro-text {
+  font-size: 1.15rem;
+  text-align: center;
+  max-width: 640px;
+  margin: 0 auto;
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* ----- Cards ----- */
+.cards-heading {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.5rem;
+  letter-spacing: 0.05em;
+  text-align: center;
+  margin: 0 0 2rem;
+  color: var(--accent-gold);
+}
+
+.cards-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1.5rem;
+}
+
+.card {
+  display: block;
+  padding: 1.75rem;
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 8px;
+  text-decoration: none;
+  color: var(--text-primary);
+  transition: border-color var(--transition-smooth), transform var(--transition-smooth),
+    box-shadow var(--transition-smooth);
+}
+
+.card:hover {
+  border-color: var(--accent-blue);
+  transform: translateY(-4px);
+  box-shadow: 0 8px 32px rgba(79, 195, 247, 0.2);
+}
+
+.card-icon {
+  width: 48px;
+  height: 48px;
+  margin-bottom: 1rem;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--accent-blue), var(--accent-gold));
+  opacity: 0.8;
+}
+
+.card-title {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 1.2rem;
+  margin: 0 0 0.5rem;
+  color: var(--text-primary);
+}
+
+.card-desc {
+  margin: 0;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.75);
+}
+
+/* ----- Footer ----- */
+.site-footer {
+  margin-top: auto;
+  padding: 2rem 1.5rem;
+  border-top: 1px solid rgba(79, 195, 247, 0.15);
+  text-align: center;
+}
+
+.footer-brand {
+  font-family: var(--font-heading);
+  font-weight: 600;
+  color: var(--accent-gold);
+  margin: 0 0 0.25rem;
+}
+
+.footer-credits {
+  margin: 0;
+  font-size: 0.875rem;
+  color: rgba(255, 255, 255, 0.6);
+}

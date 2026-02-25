@@ -1,0 +1,20 @@
+COSMOS WEBSITE — DESIGN REFERENCE (from cosmos-website-plan.md)
+===============================================================
+
+THEME: Dark space aesthetic — deep navy/black, stars, glowing accents
+
+COLORS:
+  Background (main):  #0a0a1a
+  Text (primary):     #ffffff
+  Accent (gold):      #f0c040
+  Accent (blue):      #4fc3f7
+
+TYPOGRAPHY:
+  Headings: Orbitron or Rajdhani (Google Fonts)
+  Body:     Lato or Source Sans Pro
+
+IMAGES SUBFOLDERS (use for assets):
+  images/hero/       — hero backgrounds, starfield assets
+  images/planets/    — planet photos (Mercury, Venus, Earth, etc.)
+  images/galaxies/   — galaxy imagery
+  images/icons/      — icons, logos

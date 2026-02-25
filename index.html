@@ -1,0 +1,125 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cosmos — Explore the Universe</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-logo">Cosmos</a>
+      <button type="button" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link is-active">Home</a></li>
+        <li><a href="planets.html" class="nav-link">Planets</a></li>
+        <li><a href="galaxies.html" class="nav-link">Galaxies</a></li>
+        <li><a href="black-holes.html" class="nav-link">Black Holes</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </nav>
+  </header>
+
+  <main>
+    <section class="hero" aria-label="Solar system overview">
+      <div class="solar-system" aria-label="Planets of the Solar System">
+        <div class="orbit orbit-1"></div>
+        <div class="orbit orbit-2"></div>
+        <div class="orbit orbit-3"></div>
+        <div class="orbit orbit-4"></div>
+        <div class="orbit orbit-5"></div>
+        <div class="orbit orbit-6"></div>
+        <div class="orbit orbit-7"></div>
+        <div class="orbit orbit-8"></div>
+
+        <div class="sun">
+          <img src="images/sun.gif" alt="The Sun">
+        </div>
+
+        <a href="planets.html#mercury" class="planet planet-mercury" aria-label="Mercury">
+          <img src="images/planets/mercury.jpg" alt="Mercury">
+        </a>
+        <a href="planets.html#venus" class="planet planet-venus" aria-label="Venus">
+          <img src="images/planets/venus.jpg" alt="Venus">
+        </a>
+        <a href="planets.html#earth" class="planet planet-earth" aria-label="Earth">
+          <img src="images/planets/earth.jpg" alt="Earth">
+        </a>
+        <a href="planets.html#mars" class="planet planet-mars" aria-label="Mars">
+          <img src="images/planets/mars.jpg" alt="Mars">
+        </a>
+        <a href="planets.html#jupiter" class="planet planet-jupiter" aria-label="Jupiter">
+          <img src="images/planets/jupiter.jpg" alt="Jupiter">
+        </a>
+        <a href="planets.html#saturn" class="planet planet-saturn" aria-label="Saturn">
+          <img src="images/planets/saturn.jpg" alt="Saturn">
+        </a>
+        <a href="planets.html#uranus" class="planet planet-uranus" aria-label="Uranus">
+          <img src="images/planets/uranus.png" alt="Uranus">
+        </a>
+        <a href="planets.html#neptune" class="planet planet-neptune" aria-label="Neptune">
+          <img src="images/planets/neptune.jpg" alt="Neptune">
+        </a>
+      </div>
+      <footer class="hero-footer">
+        <a href="planets.html" class="hero-cta">Explore the Planets</a>
+      </footer>
+    </section>
+
+    <section class="intro content-section">
+      <div class="container">
+        <p class="intro-text">
+          The cosmos holds countless wonders: eight planets orbiting our Sun, billions of galaxies,
+          and mysterious black holes. This site is your gateway to understanding our solar system
+          and beyond.
+        </p>
+      </div>
+    </section>
+
+    <section class="cards content-section">
+      <div class="container">
+        <h2 class="cards-heading">Discover</h2>
+        <div class="cards-grid">
+          <a href="planets.html" class="card card-planets">
+            <div class="card-icon" aria-hidden="true"></div>
+            <h3 class="card-title">Planets</h3>
+            <p class="card-desc">The Solar System and its eight worlds</p>
+          </a>
+          <a href="galaxies.html" class="card card-galaxies">
+            <div class="card-icon" aria-hidden="true"></div>
+            <h3 class="card-title">Galaxies</h3>
+            <p class="card-desc">Island universes across the cosmos</p>
+          </a>
+          <a href="black-holes.html" class="card card-blackholes">
+            <div class="card-icon" aria-hidden="true"></div>
+            <h3 class="card-title">Black Holes</h3>
+            <p class="card-desc">Gravity’s most extreme phenomena</p>
+          </a>
+          <a href="about.html" class="card card-about">
+            <div class="card-icon" aria-hidden="true"></div>
+            <h3 class="card-title">About</h3>
+            <p class="card-desc">This site and its sources</p>
+          </a>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container">
+      <p class="footer-brand">Cosmos</p>
+      <p class="footer-credits">Explore the Universe — Image credits: NASA, ESA</p>
+    </div>
+  </footer>
+
+  <script src="js/main.js"></script>
+</body>
+</html>
