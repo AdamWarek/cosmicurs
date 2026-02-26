@@ -174,9 +174,9 @@ body {
   position: relative;
   min-height: 100vh;
   overflow: hidden;
-  background-image: url('../images/backgrounds/stars.jpg');
+  background-image: url('../images/backgrounds/star2.gif');
   background-size: cover;
-  background-position: center;
+  background-position: contain;
   background-repeat: no-repeat;
 }
 
@@ -216,6 +216,8 @@ body {
   width: 26%;
   height: 26%;
   transform: translate(-50%, -50%);
+  overflow: hidden;
+  border-radius: 50%;
 }
 
 .sun img {
@@ -223,6 +225,8 @@ body {
   height: 100%;
   border-radius: 50%;
   object-fit: cover;
+  object-position: center;
+  transform: scale(1.18);
   box-shadow:
     0 0 40px rgba(255, 193, 7, 0.9),
     0 0 90px rgba(255, 152, 0, 0.6);
@@ -244,6 +248,11 @@ body {
   object-fit: cover;
 }
 
+.planet-uranus img {
+  object-position: center;
+  transform: scale(1.8);
+}
+
 .planet:hover {
   transform: translate(-50%, -50%) scale(1.25);
   box-shadow: 0 0 20px rgba(79, 195, 247, 0.9);
@@ -256,7 +265,7 @@ body {
 .planet-mars    { top: 35%; left: 74%; width: 7%;  height: 7%;  }
 .planet-jupiter { top: 65%; left: 78%; width: 15%; height: 15%; }
 .planet-saturn  { top: 30%; left: 82%; width: 13%; height: 13%; }
-.planet-uranus  { top: 70%; left: 86%; width: 10%; height: 10%; }
+.planet-uranus  { top: 70%; left: 86%; width: 10%; height: 10%; overflow: hidden; }
 .planet-neptune { top: 26%; left: 90%; width: 10%; height: 10%; }
 
 .hero-footer {
