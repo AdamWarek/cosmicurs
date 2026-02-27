@@ -65,6 +65,74 @@
     });
   }
 
+  /** Planet zoom: click to zoom in, stop orbit, hide others, keep axis spin. */
+  function initPlanetZoom() {
+    const planets = document.querySelectorAll('.planet');
+    const overlay = document.querySelector('.planet-zoom-overlay');
+    if (!planets.length || !overlay) return;
+
+    // Multi-click state: 0=normal, 1=zoomed, 2=grabbed, 3=released
+    let currentState = 0;
+    let activePlanetName = null;
+
+    function closeZoom() {
+      if (!activePlanetName) return;
+      
+      window.dispatchEvent(new CustomEvent('planet-grab-toggle', { 
+        detail: { planet: activePlanetName, isGrabbed: false } 
+      }));
+      
+      document.body.classList.remove(
+        `${activePlanetName}-zoomed`, 
+        'planet-zoomed-active', 
+        'planet-grabbed-active', 
+        'planet-released-active'
+      );
+      
+      currentState = 0;
+      activePlanetName = null;
+    }
+
+    planets.forEach(planet => {
+      planet.addEventListener('click', (e) => {
+        e.preventDefault();
+        const planetName = planet.getAttribute('aria-label').toLowerCase();
+        
+        if (activePlanetName && activePlanetName !== planetName) {
+          closeZoom();
+        }
+
+        activePlanetName = planetName;
+
+        if (currentState === 0) {
+          // 1st click: Zoom in
+          currentState = 1;
+          document.body.classList.add(`${planetName}-zoomed`, 'planet-zoomed-active');
+        } else if (currentState === 1) {
+          // 2nd click: Grab
+          currentState = 2;
+          window.dispatchEvent(new CustomEvent('planet-grab-toggle', { 
+            detail: { planet: planetName, isGrabbed: true } 
+          }));
+          document.body.classList.add('planet-grabbed-active');
+        } else if (currentState === 2) {
+          // 3rd click: Release
+          currentState = 3;
+          window.dispatchEvent(new CustomEvent('planet-grab-toggle', { 
+            detail: { planet: planetName, isGrabbed: false } 
+          }));
+          document.body.classList.remove('planet-grabbed-active');
+          document.body.classList.add('planet-released-active');
+        } else {
+          // 4th click: Zoom out
+          closeZoom();
+        }
+      });
+    });
+
+    overlay.addEventListener('click', closeZoom);
+  }
+
   /** Mobile nav: toggle menu open/close. */
   function initNav() {
     const toggle = document.querySelector('.nav-toggle');
@@ -87,6 +155,7 @@
 
   function init() {
     initStarfield();
+    initPlanetZoom();
     initNav();
   }
 

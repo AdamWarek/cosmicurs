@@ -1,6 +1,11 @@
 /**
  * Renders a spinning 3D Mercury globe into #mercury-3d canvas using Three.js.
  * Texture: images/3d/2k_mercury.jpg (equirectangular projection).
+ * Includes multi-click interaction logic:
+ * 1st click: Zoom in (handled by main.js/CSS)
+ * 2nd click: Grab (stop auto-spin, follow mouse)
+ * 3rd click: Release (resume auto-spin)
+ * 4th click: Zoom out (handled by main.js/CSS)
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
 
@@ -16,11 +21,9 @@ function initMercury3D() {
   renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
 
   const scene = new THREE.Scene();
-
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
   camera.position.z = 2.2;
 
-  // Sunlight from upper-left matching the texture's natural shading direction
   const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
   sunLight.position.set(-2, 1.5, 2);
   scene.add(sunLight);
@@ -32,6 +35,37 @@ function initMercury3D() {
   const material = new THREE.MeshStandardMaterial({ map: texture });
   const sphere = new THREE.Mesh(geometry, material);
   scene.add(sphere);
+
+  // Interaction state
+  let isGrabbed = false;
+  let previousMouseX = 0;
+
+  // Listen for custom events from main.js to sync state
+  window.addEventListener('planet-grab-toggle', (e) => {
+    if (e.detail.planet !== 'mercury') return;
+    isGrabbed = e.detail.isGrabbed;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isGrabbed) {
+      previousMouseX = e.clientX;
+      return;
+    }
+    const deltaX = e.clientX - previousMouseX;
+    sphere.rotation.y += deltaX * 0.01;
+    previousMouseX = e.clientX;
+  });
+
+  // Touch support for dragging
+  window.addEventListener('touchmove', (e) => {
+    if (!isGrabbed || e.touches.length === 0) {
+      if (e.touches.length > 0) previousMouseX = e.touches[0].clientX;
+      return;
+    }
+    const deltaX = e.touches[0].clientX - previousMouseX;
+    sphere.rotation.y += deltaX * 0.01;
+    previousMouseX = e.touches[0].clientX;
+  }, { passive: true });
 
   function syncSize() {
     const size = container.offsetWidth;
@@ -46,7 +80,9 @@ function initMercury3D() {
 
   function animate() {
     requestAnimationFrame(animate);
-    sphere.rotation.y += ROTATION_SPEED;
+    if (!isGrabbed) {
+      sphere.rotation.y += ROTATION_SPEED;
+    }
     renderer.render(scene, camera);
   }
   animate();

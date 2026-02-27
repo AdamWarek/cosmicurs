@@ -32,6 +32,35 @@ function initUranus3D() {
   const sphere = new THREE.Mesh(geometry, material);
   scene.add(sphere);
 
+  // Interaction state
+  let isGrabbed = false;
+  let previousMouseX = 0;
+
+  window.addEventListener('planet-grab-toggle', (e) => {
+    if (e.detail.planet !== 'uranus') return;
+    isGrabbed = e.detail.isGrabbed;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isGrabbed) {
+      previousMouseX = e.clientX;
+      return;
+    }
+    const deltaX = e.clientX - previousMouseX;
+    sphere.rotation.y += deltaX * 0.01;
+    previousMouseX = e.clientX;
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isGrabbed || e.touches.length === 0) {
+      if (e.touches.length > 0) previousMouseX = e.touches[0].clientX;
+      return;
+    }
+    const deltaX = e.touches[0].clientX - previousMouseX;
+    sphere.rotation.y += deltaX * 0.01;
+    previousMouseX = e.touches[0].clientX;
+  }, { passive: true });
+
   function syncSize() {
     const size = container.offsetWidth;
     if (size === 0) return;
@@ -45,7 +74,9 @@ function initUranus3D() {
 
   function animate() {
     requestAnimationFrame(animate);
-    sphere.rotation.y += ROTATION_SPEED;
+    if (!isGrabbed) {
+      sphere.rotation.y += ROTATION_SPEED;
+    }
     renderer.render(scene, camera);
   }
   animate();

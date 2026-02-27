@@ -1,6 +1,6 @@
 /**
- * Renders a spinning 3D Earth with cycling textures:
- * Day (30s) → Clouds (30s) → Night (30s) → repeat.
+ * Renders a spinning 3D Earth with smooth crossfade between textures
+ * and a Moon orbiting around it.
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
 
@@ -9,8 +9,16 @@ const TEXTURES = [
   'images/3d/2k_earth_clouds.jpg',
   'images/3d/2k_earth_nightmap.jpg',
 ];
+const MOON_TEXTURE = 'images/3d/moonmap2k.jpg';
+
 const ROTATION_SPEED = 0.003;
+const MOON_ORBIT_SPEED = 0.005;
+const MOON_ROTATION_SPEED = 0.002;
+const MOON_DISTANCE = 2.5;
+const MOON_SCALE = 0.27; // Moon is ~27% the size of Earth
+
 const CYCLE_INTERVAL_MS = 30000;
+const FADE_DURATION_MS = 2000;
 
 function initEarth3D() {
   const container = document.querySelector('.planet-earth');
@@ -22,34 +30,157 @@ function initEarth3D() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-  camera.position.z = 2.2;
+  camera.position.z = 4.5; // Zoomed out to fit Moon orbit
 
   const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
   sunLight.position.set(-2, 1.5, 2);
   scene.add(sunLight);
   scene.add(new THREE.AmbientLight(0xffffff, 0.15));
 
-  const geometry = new THREE.SphereGeometry(1, 64, 64);
-  const material = new THREE.MeshStandardMaterial({ map: new THREE.Texture() });
-  const sphere = new THREE.Mesh(geometry, material);
-  scene.add(sphere);
-
+  const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
   const loader = new THREE.TextureLoader();
-  let currentIndex = 0;
+  const textures = [];
+  let texturesLoaded = 0;
 
-  function loadTexture(path) {
-    loader.load(path, (tex) => {
-      tex.colorSpace = THREE.SRGBColorSpace;
-      material.map = tex;
+  // Moon setup
+  const moonGeometry = new THREE.SphereGeometry(MOON_SCALE, 32, 32);
+  const moonTexture = loader.load(MOON_TEXTURE);
+  moonTexture.colorSpace = THREE.SRGBColorSpace;
+  const moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
+  const moon = new THREE.Mesh(moonGeometry, moonMaterial);
+  
+  // Moon pivot for orbit
+  const moonPivot = new THREE.Object3D();
+  scene.add(moonPivot);
+  moonPivot.add(moon);
+  moon.position.x = MOON_DISTANCE;
+
+  // Interaction state
+  let isGrabbed = false;
+  let previousMouseX = 0;
+
+  window.addEventListener('planet-grab-toggle', (e) => {
+    if (e.detail.planet !== 'earth') return;
+    isGrabbed = e.detail.isGrabbed;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isGrabbed) {
+      previousMouseX = e.clientX;
+      return;
+    }
+    const deltaX = e.clientX - previousMouseX;
+    sphereA.rotation.y += deltaX * 0.01;
+    sphereB.rotation.y += deltaX * 0.01;
+    previousMouseX = e.clientX;
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isGrabbed || e.touches.length === 0) {
+      if (e.touches.length > 0) previousMouseX = e.touches[0].clientX;
+      return;
+    }
+    const deltaX = e.touches[0].clientX - previousMouseX;
+    sphereA.rotation.y += deltaX * 0.01;
+    sphereB.rotation.y += deltaX * 0.01;
+    previousMouseX = e.touches[0].clientX;
+  }, { passive: true });
+
+  let sphereA, sphereB;
+
+  function onAllTexturesLoaded() {
+    const materialA = new THREE.MeshStandardMaterial({
+      map: textures[0],
+      transparent: true,
+      opacity: 1,
+      depthWrite: true,
     });
+    const materialB = new THREE.MeshStandardMaterial({
+      map: textures[1],
+      transparent: true,
+      opacity: 0,
+      depthWrite: false,
+    });
+
+    sphereA = new THREE.Mesh(earthGeometry, materialA);
+    sphereB = new THREE.Mesh(earthGeometry, materialB);
+    scene.add(sphereA);
+    scene.add(sphereB);
+
+    let currentIndex = 0;
+    let activeSphere = 0; // 0 = A visible, 1 = B visible
+    let fadeStart = 0;
+    let isFading = false;
+
+    function startFade() {
+      isFading = true;
+      fadeStart = performance.now();
+    }
+
+    function cycleTexture() {
+      if (isFading) return;
+      const nextIndex = (currentIndex + 1) % TEXTURES.length;
+      const inMat = activeSphere === 0 ? materialB : materialA;
+
+      inMat.map = textures[nextIndex];
+      inMat.opacity = 0;
+      inMat.depthWrite = false;
+      startFade();
+    }
+
+    setInterval(cycleTexture, CYCLE_INTERVAL_MS);
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = performance.now();
+      
+      // Earth crossfade logic
+      if (isFading) {
+        const dt = time - fadeStart;
+        const t = Math.min(dt / FADE_DURATION_MS, 1);
+        const easeT = t * t * (3 - 2 * t);
+
+        if (t >= 1) {
+          isFading = false;
+          currentIndex = (currentIndex + 1) % TEXTURES.length;
+          activeSphere = 1 - activeSphere;
+          const outMat = activeSphere === 0 ? materialB : materialA;
+          outMat.opacity = 0;
+          outMat.depthWrite = false;
+          const inMat = activeSphere === 0 ? materialA : materialB;
+          inMat.opacity = 1;
+          inMat.depthWrite = true;
+        } else {
+          const outMat = activeSphere === 0 ? materialA : materialB;
+          const inMat = activeSphere === 0 ? materialB : materialA;
+          outMat.opacity = 1 - easeT;
+          inMat.opacity = easeT;
+        }
+      }
+
+      // Rotations
+      if (!isGrabbed) {
+        sphereA.rotation.y += ROTATION_SPEED;
+        sphereB.rotation.y += ROTATION_SPEED;
+      }
+      
+      // Moon orbit and rotation
+      moonPivot.rotation.y += MOON_ORBIT_SPEED;
+      moon.rotation.y += MOON_ROTATION_SPEED;
+
+      renderer.render(scene, camera);
+    }
+    animate();
   }
 
-  loadTexture(TEXTURES[0]);
-
-  setInterval(() => {
-    currentIndex = (currentIndex + 1) % TEXTURES.length;
-    loadTexture(TEXTURES[currentIndex]);
-  }, CYCLE_INTERVAL_MS);
+  TEXTURES.forEach((path, i) => {
+    loader.load(path, (tex) => {
+      tex.colorSpace = THREE.SRGBColorSpace;
+      textures[i] = tex;
+      texturesLoaded++;
+      if (texturesLoaded === TEXTURES.length) onAllTexturesLoaded();
+    });
+  });
 
   function syncSize() {
     const size = container.offsetWidth;
@@ -61,13 +192,6 @@ function initEarth3D() {
   const resizeObserver = new ResizeObserver(syncSize);
   resizeObserver.observe(container);
   syncSize();
-
-  function animate() {
-    requestAnimationFrame(animate);
-    sphere.rotation.y += ROTATION_SPEED;
-    renderer.render(scene, camera);
-  }
-  animate();
 }
 
 if (document.readyState === 'loading') {

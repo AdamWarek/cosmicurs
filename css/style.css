@@ -320,8 +320,140 @@ body {
 
 /* Planet scaling — adjust scale value per planet as needed */
 .planet-mercury canvas { width: 100% !important; height: 100% !important; border-radius: 50%; display: block; }
+
+/* Planet zoom state */
+.planet-zoom-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 45;
+  background: transparent; /* No background color */
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
+}
+
+.planet-zoomed-active .planet-zoom-overlay {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Hide all other planets and orbits when zoomed */
+.planet-zoomed-active .orbit,
+.planet-zoomed-active .sun,
+.planet-zoomed-active .orbit-track {
+  display: none !important;
+}
+
+/* Show only the zoomed planet's track and stop its animation */
+.mercury-zoomed .orbit-track-1,
+.venus-zoomed .orbit-track-2,
+.earth-zoomed .orbit-track-3,
+.mars-zoomed .orbit-track-4,
+.jupiter-zoomed .orbit-track-5,
+.saturn-zoomed .orbit-track-6,
+.uranus-zoomed .orbit-track-7,
+.neptune-zoomed .orbit-track-8 {
+  display: block !important;
+  animation: none !important;
+  transform: translate(-50%, -50%) rotate(0deg) !important;
+  z-index: 50;
+}
+
+.planet-zoomed-active .solar-system {
+  z-index: 46;
+  width: min(216vmin, 1560px);
+  height: min(216vmin, 1560px);
+  transform: translate(-50%, -55%);
+}
+
+.planet-zoomed-active .planet {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%) !important;
+  width: min(75vmin, 500px) !important;
+  height: min(75vmin, 500px) !important;
+  z-index: 51;
+  transition: all 0.4s ease;
+  pointer-events: auto;
+  cursor: grab;
+}
+
+.planet-grabbed-active .planet {
+  cursor: grabbing;
+}
+
+[class*="-zoomed"] .planet::after {
+  content: 'Click to grab';
+  position: absolute;
+  bottom: -2.5rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-family: var(--font-heading);
+  font-size: 1rem;
+  color: var(--accent-gold);
+  white-space: nowrap;
+  letter-spacing: 0.1em;
+  text-transform: capitalize;
+}
+
+.planet-grabbed-active .planet::after {
+  content: 'Click to release';
+}
+
+.planet-released-active .planet::after {
+  content: 'Click to return';
+}
+
+/* Planet-specific labels for clarity */
+.mercury-zoomed .planet::after { content: 'Mercury - ' attr(data-label-suffix); }
+.venus-zoomed .planet::after { content: 'Venus - ' attr(data-label-suffix); }
+.earth-zoomed .planet::after { content: 'Earth - ' attr(data-label-suffix); }
+.mars-zoomed .planet::after { content: 'Mars - ' attr(data-label-suffix); }
+.jupiter-zoomed .planet::after { content: 'Jupiter - ' attr(data-label-suffix); }
+.saturn-zoomed .planet::after { content: 'Saturn - ' attr(data-label-suffix); }
+.uranus-zoomed .planet::after { content: 'Uranus - ' attr(data-label-suffix); }
+.neptune-zoomed .planet::after { content: 'Neptune - ' attr(data-label-suffix); }
+
+/* Default suffix if not set */
+.planet-zoomed-active .planet { --label-suffix: 'Click to grab'; }
+.planet-grabbed-active .planet { --label-suffix: 'Click to release'; }
+.planet-released-active .planet { --label-suffix: 'Click to return'; }
+
+/* Simplified labels using class-based content */
+.planet-zoomed-active .planet::after { content: 'Click to grab'; }
+.planet-grabbed-active .planet::after { content: 'Click to release'; }
+.planet-released-active .planet::after { content: 'Click to return'; }
+
+.mercury-zoomed .planet::after { content: 'Mercury - Click to grab'; }
+.venus-zoomed .planet::after { content: 'Venus - Click to grab'; }
+.earth-zoomed .planet::after { content: 'Earth - Click to grab'; }
+.mars-zoomed .planet::after { content: 'Mars - Click to grab'; }
+.jupiter-zoomed .planet::after { content: 'Jupiter - Click to grab'; }
+.saturn-zoomed .planet::after { content: 'Saturn - Click to grab'; }
+.uranus-zoomed .planet::after { content: 'Uranus - Click to grab'; }
+.neptune-zoomed .planet::after { content: 'Neptune - Click to grab'; }
+
+.planet-grabbed-active.mercury-zoomed .planet::after { content: 'Mercury - Click to release'; }
+.planet-grabbed-active.venus-zoomed .planet::after { content: 'Venus - Click to release'; }
+.planet-grabbed-active.earth-zoomed .planet::after { content: 'Earth - Click to release'; }
+.planet-grabbed-active.mars-zoomed .planet::after { content: 'Mars - Click to release'; }
+.planet-grabbed-active.jupiter-zoomed .planet::after { content: 'Jupiter - Click to release'; }
+.planet-grabbed-active.saturn-zoomed .planet::after { content: 'Saturn - Click to release'; }
+.planet-grabbed-active.uranus-zoomed .planet::after { content: 'Uranus - Click to release'; }
+.planet-grabbed-active.neptune-zoomed .planet::after { content: 'Neptune - Click to release'; }
+
+.planet-released-active.mercury-zoomed .planet::after { content: 'Mercury - Click to return'; }
+.planet-released-active.venus-zoomed .planet::after { content: 'Venus - Click to return'; }
+.planet-released-active.earth-zoomed .planet::after { content: 'Earth - Click to return'; }
+.planet-released-active.mars-zoomed .planet::after { content: 'Mars - Click to return'; }
+.planet-released-active.jupiter-zoomed .planet::after { content: 'Jupiter - Click to return'; }
+.planet-released-active.saturn-zoomed .planet::after { content: 'Saturn - Click to return'; }
+.planet-released-active.uranus-zoomed .planet::after { content: 'Uranus - Click to return'; }
+.planet-released-active.neptune-zoomed .planet::after { content: 'Neptune - Click to return'; }
+
 .planet-venus canvas { width: 100% !important; height: 100% !important; border-radius: 50%; display: block; }
-.planet-earth canvas { width: 100% !important; height: 100% !important; border-radius: 50%; display: block; }
+.planet-earth canvas { width: 100% !important; height: 100% !important; display: block; }
 .planet-mars canvas { width: 100% !important; height: 100% !important; border-radius: 50%; display: block; }
 .planet-jupiter canvas { width: 100% !important; height: 100% !important; border-radius: 50%; display: block; }
 .planet-saturn canvas { width: 100% !important; height: 100% !important; border-radius: 50%; display: block; }
@@ -338,11 +470,11 @@ body {
   box-shadow: 0 0 18px rgba(79, 195, 247, 0.85);
 }
 
-/* Planet sizes (percentage of orbit track) — order Mercury→Neptune */
-.planet-mercury { width: 32%; height: 32%; overflow: hidden; }  /* orbit 1 */
+/* Planet sizes (percentage of orbit track) — Adjusted relative scale for inner planets */
+.planet-mercury { width: 12%; height: 12%; overflow: hidden; }  /* orbit 1 */
 .planet-venus   { width: 28%; height: 28%; overflow: hidden; }  /* orbit 2 */
-.planet-earth   { width: 21%; height: 21%; overflow: hidden; }  /* orbit 3 */
-.planet-mars    { width: 13%; height: 13%; overflow: hidden; }  /* orbit 4 */
+.planet-earth   { width: 30%; height: 30%; overflow: visible !important; }  /* orbit 3 */
+.planet-mars    { width: 16%; height: 16%; overflow: hidden; }  /* orbit 4 */
 .planet-jupiter { width: 24%; height: 24%; overflow: hidden; } /* orbit 5 */
 .planet-saturn  { width: 18%; height: 18%; overflow: hidden; } /* orbit 6 */
 .planet-uranus  { width: 12%; height: 12%; overflow: hidden; } /* orbit 7 */

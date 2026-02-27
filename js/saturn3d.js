@@ -59,6 +59,37 @@ function initSaturn3D() {
   ring.rotation.x = -RING_TILT;
   scene.add(ring);
 
+  // Interaction state
+  let isGrabbed = false;
+  let previousMouseX = 0;
+
+  window.addEventListener('planet-grab-toggle', (e) => {
+    if (e.detail.planet !== 'saturn') return;
+    isGrabbed = e.detail.isGrabbed;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (!isGrabbed) {
+      previousMouseX = e.clientX;
+      return;
+    }
+    const deltaX = e.clientX - previousMouseX;
+    planet.rotation.y += deltaX * 0.01;
+    ring.rotation.y += deltaX * 0.01;
+    previousMouseX = e.clientX;
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (!isGrabbed || e.touches.length === 0) {
+      if (e.touches.length > 0) previousMouseX = e.touches[0].clientX;
+      return;
+    }
+    const deltaX = e.touches[0].clientX - previousMouseX;
+    planet.rotation.y += deltaX * 0.01;
+    ring.rotation.y += deltaX * 0.01;
+    previousMouseX = e.touches[0].clientX;
+  }, { passive: true });
+
   function syncSize() {
     const size = container.offsetWidth;
     if (size === 0) return;
@@ -72,8 +103,10 @@ function initSaturn3D() {
 
   function animate() {
     requestAnimationFrame(animate);
-    planet.rotation.y += ROTATION_SPEED;
-    ring.rotation.y += ROTATION_SPEED;
+    if (!isGrabbed) {
+      planet.rotation.y += ROTATION_SPEED;
+      ring.rotation.y += ROTATION_SPEED;
+    }
     renderer.render(scene, camera);
   }
   animate();
