@@ -10,6 +10,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
+  <span class="commit-version" aria-label="Git commit version">bbcbbc2</span>
   <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
       <a href="index.html" class="nav-logo">Cosmos</a>
@@ -49,42 +50,42 @@
 
         <div class="orbit-track orbit-track-1">
           <a href="planets.html#mercury" class="planet planet-mercury" aria-label="Mercury">
-            <img src="images/planets/mercury.jpg" alt="Mercury">
+            <canvas id="mercury-3d" aria-label="Mercury rotating 3D globe"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-2">
           <a href="planets.html#venus" class="planet planet-venus" aria-label="Venus">
-            <img src="images/planets/venus.jpg" alt="Venus">
+            <canvas id="venus-3d" aria-label="Venus rotating 3D globe"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-3">
           <a href="planets.html#earth" class="planet planet-earth" aria-label="Earth">
-            <img src="images/planets/earth.jpg" alt="Earth">
+            <canvas id="earth-3d" aria-label="Earth rotating 3D globe"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-4">
           <a href="planets.html#mars" class="planet planet-mars" aria-label="Mars">
-            <img src="images/planets/mars.jpg" alt="Mars">
+            <canvas id="mars-3d" aria-label="Mars rotating 3D globe"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-5">
           <a href="planets.html#jupiter" class="planet planet-jupiter" aria-label="Jupiter">
-            <img src="images/planets/jupiter.jpg" alt="Jupiter">
+            <canvas id="jupiter-3d" aria-label="Jupiter rotating 3D globe"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-6">
           <a href="planets.html#saturn" class="planet planet-saturn" aria-label="Saturn">
-            <img src="images/planets/saturn5.png" alt="Saturn">
+            <canvas id="saturn-3d" aria-label="Saturn rotating 3D globe with rings"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-7">
           <a href="planets.html#uranus" class="planet planet-uranus" aria-label="Uranus">
-            <img src="images/planets/uranus.png" alt="Uranus">
+            <canvas id="uranus-3d" aria-label="Uranus rotating 3D globe"></canvas>
           </a>
         </div>
         <div class="orbit-track orbit-track-8">
           <a href="planets.html#neptune" class="planet planet-neptune" aria-label="Neptune">
-            <img src="images/planets/neptune.jpg" alt="Neptune">
+            <canvas id="neptune-3d" aria-label="Neptune rotating 3D globe"></canvas>
           </a>
         </div>
       </div>
@@ -140,5 +141,13 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/mercury3d.js" type="module"></script>
+  <script src="js/venus3d.js" type="module"></script>
+  <script src="js/earth3d.js" type="module"></script>
+  <script src="js/mars3d.js" type="module"></script>
+  <script src="js/saturn3d.js" type="module"></script>
+  <script src="js/jupiter3d.js" type="module"></script>
+  <script src="js/uranus3d.js" type="module"></script>
+  <script src="js/neptune3d.js" type="module"></script>
 </body>
 </html>

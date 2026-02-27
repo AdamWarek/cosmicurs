@@ -1,0 +1,4 @@
+#!/bin/sh
+# Inject commit version into index.html before each commit
+node scripts/inject-commit-version.js
+git add index.html
