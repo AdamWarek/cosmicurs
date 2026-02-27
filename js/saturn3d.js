@@ -1,11 +1,12 @@
 /**
  * Renders a spinning 3D Saturn globe with rings into #saturn-3d canvas using Three.js.
- * Textures: images/3d/2k_saturn.jpg (planet), images/3d/2k_saturn_ring_alpha.png (rings).
+ * Textures from images/3d/saturn/: saturnmap.jpg (planet), saturnringcolor.jpg + saturnringpattern.gif (rings).
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
 
-const PLANET_TEXTURE_PATH = 'images/3d/2k_saturn.jpg';
-const RING_TEXTURE_PATH = 'images/3d/2k_saturn_ring_alpha.png';
+const PLANET_TEXTURE_PATH = 'images/3d/saturn/saturnmap.jpg';
+const RING_COLOR_PATH = 'images/3d/saturn/saturnringcolor.jpg';
+const RING_PATTERN_PATH = 'images/3d/saturn/saturnringpattern.gif';
 const ROTATION_SPEED = 0.003;
 const RING_INNER_RADIUS = 1.2;
 const RING_OUTER_RADIUS = 2.3;
@@ -37,10 +38,19 @@ function initSaturn3D() {
   scene.add(planet);
 
   const ringGeometry = new THREE.RingGeometry(RING_INNER_RADIUS, RING_OUTER_RADIUS, 64);
-  const ringTexture = new THREE.TextureLoader().load(RING_TEXTURE_PATH);
-  ringTexture.colorSpace = THREE.SRGBColorSpace;
+  const loader = new THREE.TextureLoader();
+  const ringColorTex = loader.load(RING_COLOR_PATH);
+  ringColorTex.colorSpace = THREE.SRGBColorSpace;
+  ringColorTex.wrapS = ringColorTex.wrapT = THREE.RepeatWrapping;
+  ringColorTex.repeat.set(1, 1);
+
+  const ringPatternTex = loader.load(RING_PATTERN_PATH);
+  ringPatternTex.wrapS = ringPatternTex.wrapT = THREE.RepeatWrapping;
+  ringPatternTex.repeat.set(1, 1);
+
   const ringMaterial = new THREE.MeshBasicMaterial({
-    map: ringTexture,
+    map: ringColorTex,
+    alphaMap: ringPatternTex,
     transparent: true,
     side: THREE.DoubleSide,
     depthWrite: false,
