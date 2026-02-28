@@ -12,6 +12,24 @@ const RING_INNER_RADIUS = 1.2;
 const RING_OUTER_RADIUS = 2.3;
 const RING_TILT = (26.7 * Math.PI) / 180;
 
+/**
+ * Remaps RingGeometry UVs so that U = radial position (inner→outer).
+ * Saturn ring textures are horizontal strips where left→right = inner→outer band colors,
+ * so U must follow the radius for concentric ring bands.
+ */
+function applyRadialUVs(geometry, innerRadius, outerRadius) {
+  const pos = geometry.attributes.position;
+  const uvs = geometry.attributes.uv;
+
+  for (let i = 0; i < pos.count; i++) {
+    const x = pos.getX(i);
+    const y = pos.getY(i);
+    const r = Math.sqrt(x * x + y * y);
+    uvs.setXY(i, (r - innerRadius) / (outerRadius - innerRadius), 0.5);
+  }
+  uvs.needsUpdate = true;
+}
+
 function initSaturn3D() {
   const container = document.querySelector('.planet-saturn');
   const canvas = document.getElementById('saturn-3d');
@@ -37,16 +55,16 @@ function initSaturn3D() {
   const planet = new THREE.Mesh(planetGeometry, planetMaterial);
   scene.add(planet);
 
-  const ringGeometry = new THREE.RingGeometry(RING_INNER_RADIUS, RING_OUTER_RADIUS, 64);
+  const ringGeometry = new THREE.RingGeometry(RING_INNER_RADIUS, RING_OUTER_RADIUS, 64, 8);
+  applyRadialUVs(ringGeometry, RING_INNER_RADIUS, RING_OUTER_RADIUS);
+
   const loader = new THREE.TextureLoader();
   const ringColorTex = loader.load(RING_COLOR_PATH);
   ringColorTex.colorSpace = THREE.SRGBColorSpace;
   ringColorTex.wrapS = ringColorTex.wrapT = THREE.RepeatWrapping;
-  ringColorTex.repeat.set(1, 1);
 
   const ringPatternTex = loader.load(RING_PATTERN_PATH);
   ringPatternTex.wrapS = ringPatternTex.wrapT = THREE.RepeatWrapping;
-  ringPatternTex.repeat.set(1, 1);
 
   const ringMaterial = new THREE.MeshBasicMaterial({
     map: ringColorTex,

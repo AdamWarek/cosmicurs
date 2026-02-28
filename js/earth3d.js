@@ -1,6 +1,5 @@
 /**
- * Renders a spinning 3D Earth with smooth crossfade between textures
- * and a Moon orbiting around it.
+ * Renders a spinning 3D Earth with smooth crossfade between textures.
  */
 import * as THREE from 'https://cdn.jsdelivr.net/npm/three@0.167.1/build/three.module.js';
 
@@ -9,14 +8,8 @@ const TEXTURES = [
   'images/3d/2k_earth_clouds.jpg',
   'images/3d/2k_earth_nightmap.jpg',
 ];
-const MOON_TEXTURE = 'images/3d/moonmap2k.jpg';
 
 const ROTATION_SPEED = 0.003;
-const MOON_ORBIT_SPEED = 0.005;
-const MOON_ROTATION_SPEED = 0.002;
-const MOON_DISTANCE = 2.5;
-const MOON_SCALE = 0.27; // Moon is ~27% the size of Earth
-
 const CYCLE_INTERVAL_MS = 30000;
 const FADE_DURATION_MS = 2000;
 
@@ -30,7 +23,7 @@ function initEarth3D() {
 
   const scene = new THREE.Scene();
   const camera = new THREE.PerspectiveCamera(45, 1, 0.1, 100);
-  camera.position.z = 4.5; // Zoomed out to fit Moon orbit
+  camera.position.z = 3.0;
 
   const sunLight = new THREE.DirectionalLight(0xffffff, 2.5);
   sunLight.position.set(-2, 1.5, 2);
@@ -41,19 +34,6 @@ function initEarth3D() {
   const loader = new THREE.TextureLoader();
   const textures = [];
   let texturesLoaded = 0;
-
-  // Moon setup
-  const moonGeometry = new THREE.SphereGeometry(MOON_SCALE, 32, 32);
-  const moonTexture = loader.load(MOON_TEXTURE);
-  moonTexture.colorSpace = THREE.SRGBColorSpace;
-  const moonMaterial = new THREE.MeshStandardMaterial({ map: moonTexture });
-  const moon = new THREE.Mesh(moonGeometry, moonMaterial);
-  
-  // Moon pivot for orbit
-  const moonPivot = new THREE.Object3D();
-  scene.add(moonPivot);
-  moonPivot.add(moon);
-  moon.position.x = MOON_DISTANCE;
 
   // Interaction state
   let isGrabbed = false;
@@ -108,7 +88,7 @@ function initEarth3D() {
     scene.add(sphereB);
 
     let currentIndex = 0;
-    let activeSphere = 0; // 0 = A visible, 1 = B visible
+    let activeSphere = 0;
     let fadeStart = 0;
     let isFading = false;
 
@@ -133,8 +113,7 @@ function initEarth3D() {
     function animate() {
       requestAnimationFrame(animate);
       const time = performance.now();
-      
-      // Earth crossfade logic
+
       if (isFading) {
         const dt = time - fadeStart;
         const t = Math.min(dt / FADE_DURATION_MS, 1);
@@ -158,15 +137,10 @@ function initEarth3D() {
         }
       }
 
-      // Rotations
       if (!isGrabbed) {
         sphereA.rotation.y += ROTATION_SPEED;
         sphereB.rotation.y += ROTATION_SPEED;
       }
-      
-      // Moon orbit and rotation
-      moonPivot.rotation.y += MOON_ORBIT_SPEED;
-      moon.rotation.y += MOON_ROTATION_SPEED;
 
       renderer.render(scene, camera);
     }
