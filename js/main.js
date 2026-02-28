@@ -133,6 +133,88 @@
     overlay.addEventListener('click', closeZoom);
   }
 
+  /** Auto-hide header: hide after inactivity, show on mouse move or click. */
+  function initHeaderAutoHide() {
+    const header = document.querySelector('.site-header');
+    if (!header) return;
+
+    const INACTIVITY_MS = 2000;
+    let hideTimeout = null;
+
+    function scheduleHide() {
+      if (hideTimeout) clearTimeout(hideTimeout);
+      hideTimeout = setTimeout(function () {
+        const links = document.querySelector('.nav-links');
+        if (links && links.classList.contains('is-open')) return;
+        header.classList.add('is-hidden');
+        hideTimeout = null;
+      }, INACTIVITY_MS);
+    }
+
+    function show() {
+      if (hideTimeout) {
+        clearTimeout(hideTimeout);
+        hideTimeout = null;
+      }
+      header.classList.remove('is-hidden');
+      scheduleHide();
+    }
+
+    ['mousemove', 'mousedown', 'click', 'touchstart', 'touchmove', 'keydown'].forEach(function (evt) {
+      document.addEventListener(evt, show, { passive: true });
+    });
+
+    scheduleHide();
+  }
+
+  /** Moon info HUD: show typed text when moon is zoomed. */
+  function initMoonInfoBox() {
+    var textEl = document.querySelector('#moon-info-box .planet-info-text');
+    if (!textEl) return;
+
+    var MOON_TEXT = 'This is moon';
+    var CHAR_DELAY_MS = 50;
+    var typeTimeout = null;
+
+    function typeText(text, el) {
+      el.textContent = '';
+      el.classList.remove('typing-done');
+      var i = 0;
+
+      function typeChar() {
+        if (i < text.length) {
+          el.textContent += text[i];
+          i++;
+          typeTimeout = setTimeout(typeChar, CHAR_DELAY_MS);
+        } else {
+          el.classList.add('typing-done');
+        }
+      }
+
+      typeChar();
+    }
+
+    function clearText() {
+      if (typeTimeout) clearTimeout(typeTimeout);
+      typeTimeout = null;
+      textEl.textContent = '';
+      textEl.classList.remove('typing-done');
+    }
+
+    var observer = new MutationObserver(function () {
+      if (document.body.classList.contains('moon-zoomed')) {
+        typeText(MOON_TEXT, textEl);
+      } else {
+        clearText();
+      }
+    });
+
+    observer.observe(document.body, {
+      attributes: true,
+      attributeFilter: ['class']
+    });
+  }
+
   /** Mobile nav: toggle menu open/close. */
   function initNav() {
     const toggle = document.querySelector('.nav-toggle');
@@ -156,6 +238,8 @@
   function init() {
     initStarfield();
     initPlanetZoom();
+    initHeaderAutoHide();
+    initMoonInfoBox();
     initNav();
   }
 
