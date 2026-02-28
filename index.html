@@ -44,9 +44,10 @@
         <div class="orbit orbit-7"></div>
         <div class="orbit orbit-8"></div>
 
-        <div class="sun">
-          <img src="images/sun1.gif" alt="The Sun">
-        </div>
+        <a href="planets.html#sun" class="sun planet planet-sun" aria-label="Sun">
+          <img src="images/sun1.gif" alt="The Sun" class="sun-img">
+          <canvas id="sun-3d" class="sun-canvas" aria-hidden="true"></canvas>
+        </a>
 
         <div class="orbit-track orbit-track-1">
           <a href="planets.html#mercury" class="planet planet-mercury" aria-label="Mercury">
@@ -147,6 +148,7 @@
   </footer>
 
   <script src="js/main.js"></script>
+  <script src="js/sun3d.js" type="module"></script>
   <script src="js/mercury3d.js" type="module"></script>
   <script src="js/venus3d.js" type="module"></script>
   <script src="js/earth3d.js" type="module"></script>

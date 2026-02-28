@@ -77,18 +77,18 @@
 
     function closeZoom() {
       if (!activePlanetName) return;
-      
-      window.dispatchEvent(new CustomEvent('planet-grab-toggle', { 
-        detail: { planet: activePlanetName, isGrabbed: false } 
+
+      window.dispatchEvent(new CustomEvent('planet-grab-toggle', {
+        detail: { planet: activePlanetName, isGrabbed: false }
       }));
-      
+
       document.body.classList.remove(
-        `${activePlanetName}-zoomed`, 
-        'planet-zoomed-active', 
-        'planet-grabbed-active', 
+        `${activePlanetName}-zoomed`,
+        'planet-zoomed-active',
+        'planet-grabbed-active',
         'planet-released-active'
       );
-      
+
       currentState = 0;
       activePlanetName = null;
     }

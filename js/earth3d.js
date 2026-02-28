@@ -8,6 +8,7 @@ const TEXTURES = [
   'images/3d/2k_earth_clouds.jpg',
   'images/3d/2k_earth_nightmap.jpg',
 ];
+const ZOOM_TEXTURE = 'images/3d/earth/earthzoom.jpg';
 
 const ROTATION_SPEED = 0.003;
 const CYCLE_INTERVAL_MS = 30000;
@@ -34,6 +35,14 @@ function initEarth3D() {
   const loader = new THREE.TextureLoader();
   const textures = [];
   let texturesLoaded = 0;
+  let zoomTexture = null;
+
+  loader.load(ZOOM_TEXTURE, (tex) => {
+    tex.colorSpace = THREE.SRGBColorSpace;
+    tex.anisotropy = renderer.capabilities.getMaxAnisotropy();
+    tex.minFilter = THREE.LinearMipmapLinearFilter;
+    zoomTexture = tex;
+  });
 
   // Interaction state
   let isGrabbed = false;
@@ -108,7 +117,35 @@ function initEarth3D() {
       startFade();
     }
 
-    setInterval(cycleTexture, CYCLE_INTERVAL_MS);
+    let cycleInterval = setInterval(cycleTexture, CYCLE_INTERVAL_MS);
+
+    function applyZoomTexture(isZoomed) {
+      if (isZoomed) {
+        if (zoomTexture) {
+          materialA.map = zoomTexture;
+          materialB.map = zoomTexture;
+          materialA.opacity = 1;
+          materialB.opacity = 0;
+          materialB.depthWrite = false;
+        }
+        clearInterval(cycleInterval);
+        cycleInterval = null;
+      } else {
+        materialA.map = textures[currentIndex];
+        materialB.map = textures[(currentIndex + 1) % TEXTURES.length];
+        materialA.opacity = activeSphere === 0 ? 1 : 0;
+        materialB.opacity = activeSphere === 0 ? 0 : 1;
+        materialB.depthWrite = false;
+        materialA.depthWrite = activeSphere === 0;
+        if (!cycleInterval) cycleInterval = setInterval(cycleTexture, CYCLE_INTERVAL_MS);
+      }
+    }
+
+    const zoomObserver = new MutationObserver(() => {
+      applyZoomTexture(document.body.classList.contains('earth-zoomed'));
+    });
+    zoomObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+    if (document.body.classList.contains('earth-zoomed')) applyZoomTexture(true);
 
     function animate() {
       requestAnimationFrame(animate);
