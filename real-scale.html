@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Real Scale — Cosmos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@400;600;700&family=Lato:wght@300;400;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body class="real-scale-page">
+  <span class="commit-version" aria-label="Git commit version">bbcbbc2</span>
+  <header class="site-header">
+    <nav class="nav" aria-label="Main navigation">
+      <a href="index.html" class="nav-logo">Cosmos</a>
+      <button type="button" class="nav-toggle" aria-label="Toggle menu" aria-expanded="false">
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+        <span class="nav-toggle-bar"></span>
+      </button>
+      <ul class="nav-links">
+        <li><a href="index.html" class="nav-link is-active">Home</a></li>
+        <li><a href="planets.html" class="nav-link">Planets</a></li>
+        <li><a href="galaxies.html" class="nav-link">Galaxies</a></li>
+        <li><a href="black-holes.html" class="nav-link">Black Holes</a></li>
+        <li><a href="about.html" class="nav-link">About</a></li>
+      </ul>
+    </nav>
+    <div class="view-switcher">
+      <a href="index.html" class="view-switcher-btn is-active">Real Scale</a>
+      <button type="button" class="view-switcher-btn" id="true-distance-toggle">True Distance</button>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero real-scale-hero" aria-label="Solar system to scale">
+      <video class="hero-video" autoplay loop muted playsinline aria-hidden="true">
+        <source src="images/backgrounds/star4.webm" type="video/webm">
+      </video>
+
+      <div class="real-scale-wrapper" id="real-scale-wrapper">
+        <div class="real-scale-strip" id="real-scale-strip">
+          <div class="rs-item" data-planet="sun">
+            <div class="rs-body"></div>
+            <span class="rs-label">Sun</span>
+          </div>
+          <div class="rs-item" data-planet="mercury">
+            <div class="rs-body"></div>
+            <span class="rs-label">Mercury</span>
+          </div>
+          <div class="rs-item" data-planet="venus">
+            <div class="rs-body"></div>
+            <span class="rs-label">Venus</span>
+          </div>
+          <div class="rs-item" data-planet="earth">
+            <div class="rs-body"></div>
+            <span class="rs-label">Earth</span>
+          </div>
+          <div class="rs-item" data-planet="mars">
+            <div class="rs-body"></div>
+            <span class="rs-label">Mars</span>
+          </div>
+          <div class="rs-item" data-planet="jupiter">
+            <div class="rs-body"></div>
+            <span class="rs-label">Jupiter</span>
+          </div>
+          <div class="rs-item" data-planet="saturn">
+            <div class="rs-body"></div>
+            <span class="rs-label">Saturn</span>
+          </div>
+          <div class="rs-item" data-planet="uranus">
+            <div class="rs-body"></div>
+            <span class="rs-label">Uranus</span>
+          </div>
+          <div class="rs-item" data-planet="neptune">
+            <div class="rs-body"></div>
+            <span class="rs-label">Neptune</span>
+          </div>
+        </div>
+
+        <div class="rs-gap-labels" id="rs-gap-labels"></div>
+      </div>
+
+      <div class="au-ruler" id="au-ruler"></div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <p class="footer-credits">Image credits: NASA, ESA</p>
+  </footer>
+
+  <script src="js/main.js"></script>
+  <script src="js/real-scale.js"></script>
+</body>
+</html>

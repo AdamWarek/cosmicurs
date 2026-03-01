@@ -846,3 +846,230 @@ body {
   font-size: 0.875rem;
   color: rgba(255, 255, 255, 0.6);
 }
+
+/* ----- View Switcher ----- */
+.view-switcher {
+  display: flex;
+  gap: 0;
+  padding: 0 1.5rem 0.5rem;
+}
+
+.view-switcher-btn {
+  display: block;
+  padding: 0.35rem 1rem;
+  font-family: var(--font-heading);
+  font-weight: 600;
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  text-decoration: none;
+  color: rgba(255, 255, 255, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-right: none;
+  border-radius: 0;
+  background: transparent;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+
+.view-switcher-btn:last-child {
+  border-right: 1px solid rgba(255, 255, 255, 0.55);
+}
+
+.view-switcher-btn:hover {
+  background: rgba(255, 255, 255, 0.12);
+  color: #fff;
+}
+
+.view-switcher-btn.is-active {
+  background: rgba(255, 255, 255, 0.92);
+  color: #0a0a1a;
+}
+
+/* ----- Real Scale Page ----- */
+.real-scale-hero {
+  position: relative;
+  height: 100vh;
+  overflow: hidden;
+  background: var(--bg-main);
+}
+
+.real-scale-page {
+  overflow: hidden;
+  height: 100vh;
+}
+
+.real-scale-wrapper {
+  position: absolute;
+  inset: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+  z-index: 1;
+}
+
+.real-scale-wrapper.is-scrollable {
+  overflow-x: scroll;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(0, 230, 255, 0.4) rgba(0, 230, 255, 0.08);
+}
+
+.real-scale-wrapper.is-scrollable::-webkit-scrollbar {
+  height: 8px;
+}
+
+.real-scale-wrapper.is-scrollable::-webkit-scrollbar-track {
+  background: rgba(0, 230, 255, 0.08);
+}
+
+.real-scale-wrapper.is-scrollable::-webkit-scrollbar-thumb {
+  background: rgba(0, 230, 255, 0.4);
+  border-radius: 2px;
+}
+
+.real-scale-strip {
+  position: relative;
+  height: 100vh;
+  min-width: 100vw;
+}
+
+.rs-item {
+  position: absolute;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: left 0.8s ease;
+}
+
+.rs-body {
+  border-radius: 50%;
+  background-size: cover;
+  background-position: center;
+  box-shadow: 0 0 10px rgba(255, 255, 255, 0.1);
+}
+
+.rs-label {
+  position: absolute;
+  top: 100%;
+  margin-top: 8px;
+  font-family: var(--font-heading);
+  font-size: 0.55rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.7);
+  white-space: nowrap;
+}
+
+/* Planet textures */
+[data-planet="sun"] .rs-body {
+  background-image: url('../images/3d/sun/8k_sun.jpg');
+  box-shadow: 0 0 60px rgba(255, 193, 7, 0.6), 0 0 120px rgba(255, 152, 0, 0.3);
+}
+
+[data-planet="mercury"] .rs-body { background-image: url('../images/3d/2k_mercury.jpg'); }
+[data-planet="venus"] .rs-body { background-image: url('../images/3d/2k_venus_surface.jpg'); }
+[data-planet="earth"] .rs-body { background-image: url('../images/3d/2k_earth_daymap.jpg'); }
+[data-planet="mars"] .rs-body { background-image: url('../images/3d/2k_mars.jpg'); }
+[data-planet="jupiter"] .rs-body { background-image: url('../images/3d/2k_jupiter.jpg'); }
+[data-planet="saturn"] .rs-body { background-image: url('../images/3d/saturn/saturnmap.jpg'); }
+[data-planet="uranus"] .rs-body { background-image: url('../images/3d/2k_uranus.jpg'); }
+[data-planet="neptune"] .rs-body { background-image: url('../images/3d/2k_neptune.jpg'); }
+
+/* ----- Gap Labels (True Distance mode) ----- */
+.rs-gap-labels {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.rs-gap {
+  position: absolute;
+  top: 50%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transform: translate(-50%, -50%);
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+}
+
+.is-scrollable .rs-gap {
+  opacity: 1;
+}
+
+.rs-gap-line {
+  position: absolute;
+  top: 50%;
+  width: 100%;
+  height: 0;
+  border-top: 1px dashed rgba(0, 230, 255, 0.25);
+}
+
+.rs-gap-text {
+  font-family: var(--font-heading);
+  font-size: 0.5rem;
+  font-weight: 400;
+  letter-spacing: 0.08em;
+  color: rgba(0, 230, 255, 0.7);
+  white-space: nowrap;
+  text-align: center;
+  line-height: 1.4;
+  background: rgba(10, 10, 26, 0.7);
+  padding: 0.2rem 0.5rem;
+  border-radius: 2px;
+}
+
+/* ----- AU Ruler ----- */
+.au-ruler {
+  position: absolute;
+  bottom: 2rem;
+  left: 0;
+  height: 20px;
+  z-index: 3;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.5s ease 0.3s;
+}
+
+.is-scrollable ~ .au-ruler {
+  opacity: 1;
+}
+
+.au-tick {
+  position: absolute;
+  bottom: 0;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.au-tick::before {
+  content: '';
+  width: 1px;
+  height: 8px;
+  background: rgba(0, 230, 255, 0.4);
+}
+
+.au-tick-label {
+  font-family: var(--font-heading);
+  font-size: 0.45rem;
+  color: rgba(0, 230, 255, 0.5);
+  letter-spacing: 0.08em;
+  white-space: nowrap;
+  margin-top: 2px;
+}
+
+/* Real-scale page footer sits above the ruler */
+.real-scale-page .site-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 5;
+  padding: 0.5rem 1rem;
+  pointer-events: none;
+}
