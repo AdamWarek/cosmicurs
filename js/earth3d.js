@@ -31,7 +31,8 @@ function initEarth3D() {
   scene.add(sunLight);
   scene.add(new THREE.AmbientLight(0xffffff, 0.15));
 
-  const earthGeometry = new THREE.SphereGeometry(1, 64, 64);
+  const segments = window.innerWidth < 768 ? 32 : 64;
+  const earthGeometry = new THREE.SphereGeometry(1, segments, segments);
   const loader = new THREE.TextureLoader();
   const textures = [];
   let texturesLoaded = 0;
@@ -143,6 +144,7 @@ function initEarth3D() {
 
     const zoomObserver = new MutationObserver(() => {
       applyZoomTexture(document.body.classList.contains('earth-zoomed'));
+      setTimeout(syncSize, window.innerWidth < 768 ? 250 : 100);
     });
     zoomObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
     if (document.body.classList.contains('earth-zoomed')) applyZoomTexture(true);

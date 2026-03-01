@@ -74,8 +74,9 @@ function initSun3D() {
 
   const zoomObserver = new MutationObserver(() => {
     const isZoomed = document.body.classList.contains('sun-zoomed');
-    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isZoomed ? 3 : 2));
-    setTimeout(syncSize, 100);
+    const isMobile = window.innerWidth < 768;
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, isMobile ? 2 : (isZoomed ? 3 : 2)));
+    setTimeout(syncSize, isMobile ? 250 : 100);
   });
   zoomObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 

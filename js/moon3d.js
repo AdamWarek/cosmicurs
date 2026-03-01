@@ -69,6 +69,11 @@ function initMoon3D() {
   resizeObserver.observe(container);
   syncSize();
 
+  const zoomObserver = new MutationObserver(() => {
+    setTimeout(syncSize, window.innerWidth < 768 ? 250 : 100);
+  });
+  zoomObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
+
   function animate() {
     requestAnimationFrame(animate);
     if (!isGrabbed) {

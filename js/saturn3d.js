@@ -48,14 +48,15 @@ function initSaturn3D() {
   scene.add(sunLight);
   scene.add(new THREE.AmbientLight(0xffffff, 0.15));
 
-  const planetGeometry = new THREE.SphereGeometry(1, 64, 64);
+  const segments = window.innerWidth < 768 ? 32 : 64;
+  const planetGeometry = new THREE.SphereGeometry(1, segments, segments);
   const planetTexture = new THREE.TextureLoader().load(PLANET_TEXTURE_PATH);
   planetTexture.colorSpace = THREE.SRGBColorSpace;
   const planetMaterial = new THREE.MeshStandardMaterial({ map: planetTexture });
   const planet = new THREE.Mesh(planetGeometry, planetMaterial);
   scene.add(planet);
 
-  const ringGeometry = new THREE.RingGeometry(RING_INNER_RADIUS, RING_OUTER_RADIUS, 64, 8);
+  const ringGeometry = new THREE.RingGeometry(RING_INNER_RADIUS, RING_OUTER_RADIUS, segments, 8);
   applyRadialUVs(ringGeometry, RING_INNER_RADIUS, RING_OUTER_RADIUS);
 
   const loader = new THREE.TextureLoader();
@@ -118,6 +119,11 @@ function initSaturn3D() {
   const resizeObserver = new ResizeObserver(syncSize);
   resizeObserver.observe(container);
   syncSize();
+
+  const zoomObserver = new MutationObserver(() => {
+    setTimeout(syncSize, window.innerWidth < 768 ? 250 : 100);
+  });
+  zoomObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
   function animate() {
     requestAnimationFrame(animate);

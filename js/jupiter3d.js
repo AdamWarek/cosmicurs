@@ -24,7 +24,8 @@ function initJupiter3D() {
   scene.add(sunLight);
   scene.add(new THREE.AmbientLight(0xffffff, 0.15));
 
-  const geometry = new THREE.SphereGeometry(1, 64, 64);
+  const segments = window.innerWidth < 768 ? 32 : 64;
+  const geometry = new THREE.SphereGeometry(1, segments, segments);
   const texture = new THREE.TextureLoader().load(TEXTURE_PATH);
   texture.colorSpace = THREE.SRGBColorSpace;
   const material = new THREE.MeshStandardMaterial({ map: texture });
@@ -70,6 +71,11 @@ function initJupiter3D() {
   const resizeObserver = new ResizeObserver(syncSize);
   resizeObserver.observe(container);
   syncSize();
+
+  const zoomObserver = new MutationObserver(() => {
+    setTimeout(syncSize, window.innerWidth < 768 ? 250 : 100);
+  });
+  zoomObserver.observe(document.body, { attributes: true, attributeFilter: ['class'] });
 
   function animate() {
     requestAnimationFrame(animate);
