@@ -777,40 +777,46 @@ body {
   margin: 0 auto;
 }
 
-/* ----- Planet Info HUD Box ----- */
-.planet-info-box {
+@keyframes blink-cursor {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0; }
+}
+
+/* ----- Zoom info box (Sun, planets, Moon — left side, menu-style design) ----- */
+.zoom-info-box {
   position: fixed;
   top: 50%;
-  right: 55%;
-  transform: translateY(-50%);
-  width: clamp(260px, 25vw, 400px);
-  min-height: 150px;
+  left: 1.5rem;
+  right: auto;
+  /* Do not overlap object: object left at 50% - half width (Sun 62.5vmin); box right edge stays left of that minus 2rem gap */
+  max-width: min(360px, calc(50% - min(62.5vmin, 417px) - 3.5rem));
+  width: clamp(260px, 22vw, 360px);
+  min-height: 120px;
   z-index: 52;
   opacity: 0;
   pointer-events: none;
   transition: opacity 0.4s ease;
+  transform: translateY(-50%);
 }
 
-.moon-zoomed .planet-info-box {
+.planet-zoomed-active .zoom-info-box {
   opacity: 1;
   pointer-events: auto;
 }
 
-.planet-info-box-inner {
+.zoom-info-box-inner {
   position: relative;
   padding: 1.25rem 1.5rem;
   border: 1px solid rgba(0, 230, 255, 0.6);
   border-radius: 4px;
   background: transparent;
-  backdrop-filter: none;
   box-shadow:
     0 0 12px rgba(0, 230, 255, 0.15),
     inset 0 0 12px rgba(0, 230, 255, 0.05);
 }
 
-/* Horizontal corner accents */
-.planet-info-box-inner::before,
-.planet-info-box-inner::after {
+.zoom-info-box-inner::before,
+.zoom-info-box-inner::after {
   content: '';
   position: absolute;
   width: 16px;
@@ -819,19 +825,18 @@ body {
   box-shadow: 0 0 8px #00e6ff;
 }
 
-.planet-info-box-inner::before {
+.zoom-info-box-inner::before {
   top: -2px;
   left: -1px;
 }
 
-.planet-info-box-inner::after {
+.zoom-info-box-inner::after {
   bottom: -2px;
   right: -1px;
 }
 
-/* Vertical accent bars */
-.planet-info-box::before,
-.planet-info-box::after {
+.zoom-info-box::before,
+.zoom-info-box::after {
   content: '';
   position: absolute;
   width: 3px;
@@ -840,42 +845,29 @@ body {
   box-shadow: 0 0 8px #00e6ff;
 }
 
-.planet-info-box::before {
+.zoom-info-box::before {
   left: -1px;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.planet-info-box::after {
+.zoom-info-box::after {
   right: -1px;
   top: 50%;
   transform: translateY(-50%);
 }
 
-.planet-info-text {
+.zoom-info-text {
   margin: 0;
   font-family: var(--font-body);
   font-size: 0.9rem;
   color: rgba(0, 230, 255, 0.9);
-  line-height: 1.6;
+  line-height: 1.65;
   letter-spacing: 0.03em;
-  min-height: 1.5em;
+  white-space: pre-line;
 }
 
-.planet-info-text::after {
-  content: '|';
-  animation: blink-cursor 0.7s step-end infinite;
-  color: #00e6ff;
-}
-
-.planet-info-text.typing-done::after {
-  content: none;
-}
-
-@keyframes blink-cursor {
-  0%, 100% { opacity: 1; }
-  50% { opacity: 0; }
-}
+/* No typing cursor — zoom info appears at once */
 
 /* Planet hover tag — menu-style label with typed name */
 .planet-hover-tag {

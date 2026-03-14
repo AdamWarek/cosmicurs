@@ -167,52 +167,102 @@
     scheduleHide();
   }
 
-  /** Moon info HUD: show typed text when moon is zoomed. */
-  function initMoonInfoBox() {
-    var textEl = document.querySelector('#moon-info-box .planet-info-text');
-    if (!textEl) return;
+  /** Zoom info box: typed facts in Polish for Sun, planets and Moon (left side, menu-style). */
+  function initZoomInfoBox() {
+    var box = document.getElementById('zoom-info-box');
+    var textEl = box ? box.querySelector('.zoom-info-text') : null;
+    if (!box || !textEl) return;
 
-    var MOON_TEXT = 'This is moon';
-    var CHAR_DELAY_MS = 50;
-    var typeTimeout = null;
+    var ZOOM_FACTS_PL = {
+      sun: 'Słońce to gwiazda w centrum Układu Słonecznego.\n\n' +
+        'Średnica: ok. 1,4 mln km. Składa się głównie z wodoru i helu.\n\n' +
+        'Temperatura powierzchni: ok. 5500°C. W jądrze zachodzą reakcje termojądrowe.\n\n' +
+        'Zapewnia Ziemi światło i ciepło. Bez niego nie byłoby życia (NASA).',
+      mercury: 'Merkury to najmniejsza i najbliższa Słońcu planeta.\n\n' +
+        'Średnica: ok. 4880 km. Okres obiegu: 88 dni ziemskich.\n\n' +
+        'Skrajne temperatury: od ok. -180°C w nocy do 430°C w dzień.\n\n' +
+        'Brak księżyców. Sonda MESSENGER zbadała go z orbity (NASA).',
+      venus: 'Wenus to druga planeta od Słońca, często nazywana „gwiazdą poranną”.\n\n' +
+        'Średnica: ok. 12 100 km. Gęsta atmosfera z dwutlenkiem węgla.\n\n' +
+        'Efekt cieplarniany — średnia temp. ok. 465°C. Obraca się w przeciwnym kierunku.\n\n' +
+        'Wiele misji sond (m.in. Magellan, Venus Express) badało Wenus (NASA).',
+      earth: 'Ziemia to trzecia planeta, jedyna znana z występowaniem życia.\n\n' +
+        'Średnica: ok. 12 742 km. Około 71% powierzchni pokrywają oceany.\n\n' +
+        'Atmosfera z tlenem i azotem. Naturalny satelita: Księżyc.\n\n' +
+        'Misje NASA i innych agencji badają Ziemię z kosmosu (NASA).',
+      moon: 'Księżyc to najbliższy sąsiad Ziemi.\n\n' +
+        'Ma trzy warstwy: skorupę, płaszcz i jądro — jak Ziemia.\n\n' +
+        'Jego grawitacja powoduje pływy morskie na Ziemi.\n\n' +
+        'Po niewidocznej stronie jest tyle samo światła słonecznego co po widocznej.\n\n' +
+        'Dziś nie ma tam wulkanów; miliardy lat temu płynęła lawa.\n\n' +
+        'Pył księżycowy utrudnia misje. LRO zmapował powierzchnię. Artemis — powrót na Księżyc (NASA).',
+      mars: 'Mars to czwarta planeta, „Czerwona Planeta”.\n\n' +
+        'Średnica: ok. 6779 km. Dwa księżyce: Fobos i Deimos.\n\n' +
+        'Ślady dawnych rzek i jezior. Olympus Mons — najwyższa góra w Układzie Słonecznym.\n\n' +
+        'Łaziki (Curiosity, Perseverance) i orbiter NASA badają Marsa (NASA).',
+      jupiter: 'Jowisz to największa planeta, gazowy olbrzym.\n\n' +
+        'Średnica: ok. 140 000 km. Ma ponad 80 księżyców (m.in. Europa, Ganimedes).\n\n' +
+        'Wielka Czerwona Plama to gigantyczna burza. Chroni Ziemię, przyciągając komety i asteroidy.\n\n' +
+        'Sonda Juno bada Jowisza (NASA).',
+      saturn: 'Saturn to druga największa planeta, znana z pierścieni.\n\n' +
+        'Średnica: ok. 116 000 km. Gęstość mniejsza niż wody.\n\n' +
+        'Księżyce: Tytan (gęsta atmosfera), Enceladus (gejzery). Pierścienie z lodu i skał.\n\n' +
+        'Misja Cassini badała Saturn i jego księżyce (NASA).',
+      uranus: 'Uran to lodowy olbrzym, siódma planeta od Słońca.\n\n' +
+        'Średnica: ok. 51 000 km. Oś obrotu nachylona „na boku” (ok. 98°).\n\n' +
+        'Składa się głównie z lodu i gazu. Odkryty w 1781 r. przez W. Herschela.\n\n' +
+        'Jedna misja (Voyager 2) przeleciała obok Urana (NASA).',
+      neptune: 'Neptun to najdalsza planeta, lodowy olbrzym.\n\n' +
+        'Średnica: ok. 49 000 km. Istnienie przewidziano matematycznie, zanim go zaobserwowano.\n\n' +
+        'Silne wiatry w atmosferze. Księżyc Tryton — gejzery azotu.\n\n' +
+        'Voyager 2 jedyną sondą, która odwiedziła Neptuna (NASA).'
+    };
 
-    function typeText(text, el) {
-      el.textContent = '';
-      el.classList.remove('typing-done');
-      var i = 0;
+    var ZOOM_CLASSES = [
+      'sun-zoomed', 'mercury-zoomed', 'venus-zoomed', 'earth-zoomed', 'moon-zoomed',
+      'mars-zoomed', 'jupiter-zoomed', 'saturn-zoomed', 'uranus-zoomed', 'neptune-zoomed'
+    ];
 
-      function typeChar() {
-        if (i < text.length) {
-          el.textContent += text[i];
-          i++;
-          typeTimeout = setTimeout(typeChar, CHAR_DELAY_MS);
-        } else {
-          el.classList.add('typing-done');
+    function getZoomedBody() {
+      for (var i = 0; i < ZOOM_CLASSES.length; i++) {
+        if (document.body.classList.contains(ZOOM_CLASSES[i])) {
+          return ZOOM_CLASSES[i].replace('-zoomed', '');
         }
       }
-
-      typeChar();
+      return null;
     }
 
+    var lastBodyKey = null;
+
     function clearText() {
-      if (typeTimeout) clearTimeout(typeTimeout);
-      typeTimeout = null;
+      lastBodyKey = null;
       textEl.textContent = '';
-      textEl.classList.remove('typing-done');
+      box.setAttribute('aria-hidden', 'true');
     }
 
     var observer = new MutationObserver(function () {
-      if (document.body.classList.contains('moon-zoomed')) {
-        typeText(MOON_TEXT, textEl);
-      } else {
+      if (!document.body.classList.contains('planet-zoomed-active')) {
         clearText();
+        return;
+      }
+      var bodyKey = getZoomedBody();
+      if (!bodyKey) {
+        clearText();
+        return;
+      }
+      var text = ZOOM_FACTS_PL[bodyKey];
+      if (!text) {
+        clearText();
+        return;
+      }
+      box.setAttribute('aria-hidden', 'false');
+      if (bodyKey !== lastBodyKey) {
+        lastBodyKey = bodyKey;
+        textEl.textContent = text;
       }
     });
 
-    observer.observe(document.body, {
-      attributes: true,
-      attributeFilter: ['class']
-    });
+    observer.observe(document.body, { attributes: true, attributeFilter: ['class'] });
   }
 
   /** Planet hover tag: show menu-style label with typed name on mouseenter. */
@@ -299,7 +349,7 @@
     initStarfield();
     initPlanetZoom();
     initHeaderAutoHide();
-    initMoonInfoBox();
+    initZoomInfoBox();
     initPlanetHoverTag();
     initNav();
   }
