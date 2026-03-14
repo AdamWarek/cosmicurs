@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Planety — Cosmos</title>
+  <title>Jowisz — Cosmos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <span class="commit-version" aria-label="Git commit version">bbcbbc2</span>
+<body class="planet-page">
+  <span class="commit-version" aria-label="Git commit version">—</span>
   <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
       <a href="index.html" class="nav-logo">Cosmos</a>
@@ -30,44 +30,30 @@
   </header>
 
   <main>
-    <section class="about content-section planets-section">
+    <section class="about content-section">
       <div class="container">
-        <h1 class="about-heading">Planety i Księżyc</h1>
-        <p class="about-text intro-text">Wybierz obiekt, aby przeczytać najważniejsze informacje. Na każdej stronie znajdziesz do dwóch stron kluczowych danych.</p>
-        <nav class="planets-menu" aria-label="Planety i Księżyc">
-          <a href="planet-sun.html" class="planets-menu-item">Słońce</a>
-          <a href="planet-mercury.html" class="planets-menu-item">Merkury</a>
-          <a href="planet-venus.html" class="planets-menu-item">Wenus</a>
-          <a href="planet-earth.html" class="planets-menu-item">Ziemia</a>
-          <a href="planet-moon.html" class="planets-menu-item">Księżyc</a>
-          <a href="planet-mars.html" class="planets-menu-item">Mars</a>
-          <a href="planet-jupiter.html" class="planets-menu-item">Jowisz</a>
-          <a href="planet-saturn.html" class="planets-menu-item">Saturn</a>
-          <a href="planet-uranus.html" class="planets-menu-item">Uran</a>
-          <a href="planet-neptune.html" class="planets-menu-item">Neptun</a>
-        </nav>
+        <h1 class="about-heading">Jowisz</h1>
+        <div class="planet-body">
+          <h2>Ogólne</h2>
+          <p>Jupiter is the largest planet in the Solar System, a gas giant composed mainly of hydrogen and helium. It has no solid surface: the visible “surface” is the top of dense clouds. Jupiter’s strong gravity has shaped the Solar System and helps protect Earth by deflecting or capturing many comets and asteroids.</p>
+          <h2>Atmosfera i cechy</h2>
+          <p>Atmosferę Jowisza charakteryzują pasy chmur i Wielka Czerwona Plama — gigantyczna burza. Planeta ma silne pole magnetyczne i pasy radiacyjne. Dziesiątki księżyców; cztery największe (Io, Europa, Ganimedes, Kallisto) to księżyce galileuszowe.</p>
+          <h2>Dane</h2>
+          <p>Średnica ok. 139 820 km (ponad 11 razy więcej niż Ziemia). Średnia odległość od Słońca ok. 778 mln km (5,2 j.a.). Okres obiegu ok. 12 lat ziemskich. Ponad 80 znanych księżyców. Prawdopodobnie jest stałe jądro; większość objętości to ciekły metaliczny wodór.</p>
+          <h2>Eksploracja</h2>
+          <p>Jowisza badały Pioneer, Voyager, Galileo i Juno. Sonda Juno (NASA) od 2016 r. mierzy budowę wnętrza, pole magnetyczne i atmosferę. JUICE (ESA) i Europa Clipper (NASA) będą badać Europy i Ganimedes.</p>
+        </div>
+        <a href="planets.html" class="back-link">&larr; Powrót do Planet</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="telemetry-bar">
-      <div class="telemetry-item">
-        <span class="telemetry-label">Comm Link</span>
-        <span class="telemetry-value">Encrypted</span>
-      </div>
-      <div class="telemetry-item">
-        <span class="telemetry-label">Core Temp</span>
-        <span class="telemetry-value">3.2 K</span>
-      </div>
-      <div class="telemetry-item">
-        <span class="telemetry-label">Power</span>
-        <span class="telemetry-value">98.4%</span>
-      </div>
-      <div class="telemetry-item">
-        <span class="telemetry-label">Origin</span>
-        <span class="telemetry-value">Terra</span>
-      </div>
+      <div class="telemetry-item"><span class="telemetry-label">Comm Link</span><span class="telemetry-value">Encrypted</span></div>
+      <div class="telemetry-item"><span class="telemetry-label">Core Temp</span><span class="telemetry-value">3.2 K</span></div>
+      <div class="telemetry-item"><span class="telemetry-label">Power</span><span class="telemetry-value">98.4%</span></div>
+      <div class="telemetry-item"><span class="telemetry-label">Origin</span><span class="telemetry-value">Terra</span></div>
       <div class="telemetry-cta">
         <a href="real-scale.html" class="telemetry-btn">Initiate Uplink</a>
         <span class="telemetry-btn-icon" aria-hidden="true">&gt;_</span>
@@ -75,7 +61,6 @@
     </div>
     <p class="footer-credits">Image credits: NASA, ESA</p>
   </footer>
-
   <script src="js/main.js"></script>
 </body>
 </html>

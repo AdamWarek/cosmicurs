@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-  <title>Planety — Cosmos</title>
+  <title>Merkury — Cosmos</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="css/style.css">
 </head>
-<body>
-  <span class="commit-version" aria-label="Git commit version">bbcbbc2</span>
+<body class="planet-page">
+  <span class="commit-version" aria-label="Git commit version">—</span>
   <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
       <a href="index.html" class="nav-logo">Cosmos</a>
@@ -30,44 +30,30 @@
   </header>
 
   <main>
-    <section class="about content-section planets-section">
+    <section class="about content-section">
       <div class="container">
-        <h1 class="about-heading">Planety i Księżyc</h1>
-        <p class="about-text intro-text">Wybierz obiekt, aby przeczytać najważniejsze informacje. Na każdej stronie znajdziesz do dwóch stron kluczowych danych.</p>
-        <nav class="planets-menu" aria-label="Planety i Księżyc">
-          <a href="planet-sun.html" class="planets-menu-item">Słońce</a>
-          <a href="planet-mercury.html" class="planets-menu-item">Merkury</a>
-          <a href="planet-venus.html" class="planets-menu-item">Wenus</a>
-          <a href="planet-earth.html" class="planets-menu-item">Ziemia</a>
-          <a href="planet-moon.html" class="planets-menu-item">Księżyc</a>
-          <a href="planet-mars.html" class="planets-menu-item">Mars</a>
-          <a href="planet-jupiter.html" class="planets-menu-item">Jowisz</a>
-          <a href="planet-saturn.html" class="planets-menu-item">Saturn</a>
-          <a href="planet-uranus.html" class="planets-menu-item">Uran</a>
-          <a href="planet-neptune.html" class="planets-menu-item">Neptun</a>
-        </nav>
+        <h1 class="about-heading">Merkury</h1>
+        <div class="planet-body">
+          <h2>Ogólne</h2>
+          <p>Merkury to najmniejsza i najbliższa Słońcu planeta Układu Słonecznego. Jeden obieg wokół Słońca trwa ok. 88 dni ziemskich; nie ma naturalnych satelitów. Ze względu na bliskość Słońca obserwacja z Ziemi jest trudna; dotarły do niego tylko dwie sondy: Mariner 10 i MESSENGER.</p>
+          <h2>Powierzchnia i warunki</h2>
+          <p>Merkury ma silnie pokraterowaną, księżycową powierzchnię. W dzień temperatura dochodzi do ok. 430 °C, w nocy spada do ok. -180 °C. Planeta ma bardzo cienką egzosferę (brak właściwej atmosfery) i duże jądro żelazne. Wskazuje to na burzliwą historię, możliwy gigantyczny zderzenie.</p>
+          <h2>Dane</h2>
+          <p>Średnica ok. 4880 km. Średnia odległość od Słońca ok. 58 mln km (0,39 j.a.). Dzień słoneczny na Merkurym trwa ok. 176 dni ziemskich. W stale zacienionych kraterach przy biegunach występuje lód wodny.</p>
+          <h2>Eksploracja</h2>
+          <p>Misja NASA MESSENGER okrążała Merkurego w latach 2011–2015. Misja ESA BepiColombo jest w drodze do Merkurego, by badać jego skład i pochodzenie.</p>
+        </div>
+        <a href="planets.html" class="back-link">&larr; Powrót do Planet</a>
       </div>
     </section>
   </main>
 
   <footer class="site-footer">
     <div class="telemetry-bar">
-      <div class="telemetry-item">
-        <span class="telemetry-label">Comm Link</span>
-        <span class="telemetry-value">Encrypted</span>
-      </div>
-      <div class="telemetry-item">
-        <span class="telemetry-label">Core Temp</span>
-        <span class="telemetry-value">3.2 K</span>
-      </div>
-      <div class="telemetry-item">
-        <span class="telemetry-label">Power</span>
-        <span class="telemetry-value">98.4%</span>
-      </div>
-      <div class="telemetry-item">
-        <span class="telemetry-label">Origin</span>
-        <span class="telemetry-value">Terra</span>
-      </div>
+      <div class="telemetry-item"><span class="telemetry-label">Comm Link</span><span class="telemetry-value">Encrypted</span></div>
+      <div class="telemetry-item"><span class="telemetry-label">Core Temp</span><span class="telemetry-value">3.2 K</span></div>
+      <div class="telemetry-item"><span class="telemetry-label">Power</span><span class="telemetry-value">98.4%</span></div>
+      <div class="telemetry-item"><span class="telemetry-label">Origin</span><span class="telemetry-value">Terra</span></div>
       <div class="telemetry-cta">
         <a href="real-scale.html" class="telemetry-btn">Initiate Uplink</a>
         <span class="telemetry-btn-icon" aria-hidden="true">&gt;_</span>
@@ -75,7 +61,6 @@
     </div>
     <p class="footer-credits">Image credits: NASA, ESA</p>
   </footer>
-
   <script src="js/main.js"></script>
 </body>
 </html>
