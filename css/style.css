@@ -297,14 +297,15 @@ body {
   pointer-events: none;
 }
 
-.orbit-track-1 { width: 22%; height: 22%; animation: orbit 60s linear infinite; }
-.orbit-track-2 { width: 32%; height: 32%; animation: orbit 80s linear infinite; }
-.orbit-track-3 { width: 42%; height: 42%; animation: orbit 100s linear infinite; }
-.orbit-track-4 { width: 52%; height: 52%; animation: orbit 120s linear infinite; }
-.orbit-track-5 { width: 62%; height: 62%; animation: orbit 140s linear infinite; }
-.orbit-track-6 { width: 72%; height: 72%; animation: orbit 160s linear infinite; }
-.orbit-track-7 { width: 82%; height: 82%; animation: orbit 180s linear infinite; }
-.orbit-track-8 { width: 92%; height: 92%; animation: orbit 200s linear infinite; }
+/* Inner orbits on top so overlapping planets keep inner one clickable */
+.orbit-track-1 { width: 22%; height: 22%; animation: orbit 60s linear infinite; z-index: 8; }
+.orbit-track-2 { width: 32%; height: 32%; animation: orbit 80s linear infinite; z-index: 7; }
+.orbit-track-3 { width: 42%; height: 42%; animation: orbit 100s linear infinite; z-index: 6; }
+.orbit-track-4 { width: 52%; height: 52%; animation: orbit 120s linear infinite; z-index: 5; }
+.orbit-track-5 { width: 62%; height: 62%; animation: orbit 140s linear infinite; z-index: 4; }
+.orbit-track-6 { width: 72%; height: 72%; animation: orbit 160s linear infinite; z-index: 3; }
+.orbit-track-7 { width: 82%; height: 82%; animation: orbit 180s linear infinite; z-index: 2; }
+.orbit-track-8 { width: 92%; height: 92%; animation: orbit 200s linear infinite; z-index: 1; }
 
 /* Moon sub-orbit around Earth */
 @keyframes moon-orbit {
@@ -351,6 +352,7 @@ body {
   width: 26%;
   height: 26%;
   transform: translate(-50%, -50%);
+  z-index: 0; /* Below orbit tracks so planets stay clickable when passing in front */
   -webkit-mask-image: radial-gradient(circle, white 35%, transparent 70%);
   mask-image: radial-gradient(circle, white 35%, transparent 70%);
   isolation: isolate;
@@ -873,6 +875,64 @@ body {
 @keyframes blink-cursor {
   0%, 100% { opacity: 1; }
   50% { opacity: 0; }
+}
+
+/* Planet hover tag — menu-style label with typed name */
+.planet-hover-tag {
+  position: fixed;
+  z-index: 40;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.15s ease;
+}
+
+.planet-hover-tag.is-visible {
+  opacity: 1;
+}
+
+.planet-hover-tag-inner {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.4em;
+  padding: 0.35rem 1rem;
+  border: 1px solid rgba(255, 255, 255, 0.35);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.85);
+  font-family: var(--font-heading);
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  white-space: nowrap;
+}
+
+.planet-hover-tag-label {
+  font-weight: 400;
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  opacity: 0.6;
+}
+
+.planet-hover-tag-text {
+  font-weight: 700;
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+}
+
+.planet-hover-tag-text::after {
+  content: '|';
+  animation: blink-cursor 0.7s step-end infinite;
+  color: rgba(255, 255, 255, 0.85);
+}
+
+.planet-hover-tag-text.typing-done::after {
+  content: none;
+}
+
+/* Hide hover tag when a planet is zoomed */
+.planet-zoomed-active .planet-hover-tag {
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* ----- Footer ----- */

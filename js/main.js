@@ -215,6 +215,66 @@
     });
   }
 
+  /** Planet hover tag: show menu-style label with typed name on mouseenter. */
+  function initPlanetHoverTag() {
+    var tagEl = document.getElementById('planet-hover-tag');
+    var textEl = document.getElementById('planet-hover-tag-text');
+    if (!tagEl || !textEl) return;
+
+    var CHAR_DELAY_MS = 50;
+    var typeTimeout = null;
+
+    function typeText(text, el) {
+      el.textContent = '';
+      el.classList.remove('typing-done');
+      var i = 0;
+      function typeChar() {
+        if (i < text.length) {
+          el.textContent += text[i];
+          i++;
+          typeTimeout = setTimeout(typeChar, CHAR_DELAY_MS);
+        } else {
+          el.classList.add('typing-done');
+        }
+      }
+      typeChar();
+    }
+
+    function positionTag(planetRect) {
+      var x = planetRect.left + planetRect.width / 2;
+      var y = planetRect.top - 8;
+      tagEl.style.left = x + 'px';
+      tagEl.style.top = y + 'px';
+      tagEl.style.transform = 'translate(-50%, -100%)';
+    }
+
+    function showTag(name, planetEl) {
+      if (document.body.classList.contains('planet-zoomed-active')) return;
+      if (typeTimeout) clearTimeout(typeTimeout);
+      typeTimeout = null;
+      textEl.textContent = '';
+      textEl.classList.remove('typing-done');
+      positionTag(planetEl.getBoundingClientRect());
+      tagEl.classList.add('is-visible');
+      tagEl.setAttribute('aria-hidden', 'false');
+      typeText(name, textEl);
+    }
+
+    function hideTag() {
+      if (typeTimeout) clearTimeout(typeTimeout);
+      typeTimeout = null;
+      tagEl.classList.remove('is-visible');
+      tagEl.setAttribute('aria-hidden', 'true');
+      textEl.textContent = '';
+    }
+
+    document.querySelectorAll('.planet').forEach(function (planet) {
+      var name = planet.getAttribute('aria-label') || 'Planet';
+      planet.addEventListener('mouseenter', function () { showTag(name, planet); });
+      planet.addEventListener('mouseleave', hideTag);
+    });
+  }
+
   /** Mobile nav: toggle menu open/close. */
   function initNav() {
     const toggle = document.querySelector('.nav-toggle');
@@ -240,6 +300,7 @@
     initPlanetZoom();
     initHeaderAutoHide();
     initMoonInfoBox();
+    initPlanetHoverTag();
     initNav();
   }
 

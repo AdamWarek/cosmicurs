@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Preview: Planet hover tag with typing</title>
+  <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    * { box-sizing: border-box; }
+    body {
+      margin: 0;
+      min-height: 100vh;
+      background: #0a0a1a;
+      font-family: 'Space Grotesk', sans-serif;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: #fff;
+    }
+    .preview-title {
+      position: fixed;
+      top: 1rem;
+      left: 50%;
+      transform: translateX(-50%);
+      font-size: 0.9rem;
+      color: rgba(0, 230, 255, 0.8);
+      z-index: 10;
+    }
+    .demo-area {
+      position: relative;
+      width: 320px;
+      height: 320px;
+      border: 1px dashed rgba(0, 230, 255, 0.3);
+      border-radius: 50%;
+    }
+    .planet {
+      position: absolute;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: transform 0.2s;
+    }
+    .planet:hover { transform: scale(1.2); }
+    .planet-sun { left: 50%; top: 50%; margin: -20px 0 0 -20px; background: radial-gradient(circle, #ffc107 0%, #ff9800 70%); box-shadow: 0 0 30px rgba(255,193,7,0.8); }
+    .planet-mercury { left: 85%; top: 50%; margin: -20px 0 0 -20px; background: #8c8c8c; }
+    .planet-venus { left: 50%; top: 15%; margin: -20px 0 0 -20px; background: #e6c229; }
+    .planet-earth { left: 15%; top: 50%; margin: -20px 0 0 -20px; background: #2196f3; }
+    /* Hover tag — matches nav menu style (pill, border, font) */
+    .planet-hover-tag {
+      position: fixed;
+      z-index: 100;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.15s ease;
+    }
+    .planet-hover-tag.is-visible { opacity: 1; }
+    .planet-hover-tag-inner {
+      display: inline-flex;
+      align-items: baseline;
+      gap: 0.4em;
+      padding: 0.35rem 1rem;
+      border: 1px solid rgba(255, 255, 255, 0.35);
+      border-radius: 999px;
+      background: rgba(255, 255, 255, 0.1);
+      color: rgba(255, 255, 255, 0.85);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.75rem;
+      text-transform: uppercase;
+      letter-spacing: 0.06em;
+      white-space: nowrap;
+    }
+    .planet-hover-tag-label {
+      font-weight: 400;
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      opacity: 0.6;
+    }
+    .planet-hover-tag-text {
+      font-weight: 700;
+      font-size: 0.8rem;
+      letter-spacing: 0.06em;
+    }
+    .planet-hover-tag-text::after {
+      content: '|';
+      animation: blink 0.7s step-end infinite;
+      color: rgba(255, 255, 255, 0.85);
+    }
+    .planet-hover-tag-text.typing-done::after { content: none; }
+    @keyframes blink {
+      0%, 100% { opacity: 1; }
+      50% { opacity: 0; }
+    }
+  </style>
+</head>
+<body>
+  <p class="preview-title">Preview: Hover a planet to see the name tag with typing effect</p>
+  <div class="demo-area">
+    <div class="planet planet-sun" data-name="Sun" aria-label="Sun"></div>
+    <div class="planet planet-mercury" data-name="Mercury" aria-label="Mercury"></div>
+    <div class="planet planet-venus" data-name="Venus" aria-label="Venus"></div>
+    <div class="planet planet-earth" data-name="Earth" aria-label="Earth"></div>
+  </div>
+  <div class="planet-hover-tag" id="planet-hover-tag" aria-live="polite" aria-hidden="true">
+    <span class="planet-hover-tag-inner">
+      <span class="planet-hover-tag-label">Section:</span>
+      <span class="planet-hover-tag-text" id="planet-hover-tag-text"></span>
+    </span>
+  </div>
+
+  <script>
+    (function () {
+      var TAG = document.getElementById('planet-hover-tag');
+      var TEXT = document.getElementById('planet-hover-tag-text');
+      var CHAR_DELAY_MS = 50;
+      var typeTimeout = null;
+
+      function typeText(text, el) {
+        el.textContent = '';
+        el.classList.remove('typing-done');
+        var i = 0;
+        function typeChar() {
+          if (i < text.length) {
+            el.textContent += text[i];
+            i++;
+            typeTimeout = setTimeout(typeChar, CHAR_DELAY_MS);
+          } else {
+            el.classList.add('typing-done');
+          }
+        }
+        typeChar();
+      }
+
+      function positionTag(planetRect) {
+        var tagRect = TAG.getBoundingClientRect();
+        var x = planetRect.left + planetRect.width / 2;
+        var y = planetRect.top - 8;
+        TAG.style.left = x + 'px';
+        TAG.style.top = y + 'px';
+        TAG.style.transform = 'translate(-50%, -100%)';
+      }
+
+      function showTag(name, planetEl) {
+        if (typeTimeout) clearTimeout(typeTimeout);
+        typeTimeout = null;
+        TEXT.textContent = '';
+        TEXT.classList.remove('typing-done');
+        positionTag(planetEl.getBoundingClientRect());
+        TAG.classList.add('is-visible');
+        TAG.setAttribute('aria-hidden', 'false');
+        typeText(name, TEXT);
+      }
+
+      function hideTag() {
+        if (typeTimeout) clearTimeout(typeTimeout);
+        typeTimeout = null;
+        TAG.classList.remove('is-visible');
+        TAG.setAttribute('aria-hidden', 'true');
+        TEXT.textContent = '';
+      }
+
+      document.querySelectorAll('.planet').forEach(function (planet) {
+        var name = planet.getAttribute('data-name') || planet.getAttribute('aria-label') || 'Planet';
+        planet.addEventListener('mouseenter', function () { showTag(name, planet); });
+        planet.addEventListener('mouseleave', hideTag);
+      });
+    })();
+  </script>
+</body>
+</html>
