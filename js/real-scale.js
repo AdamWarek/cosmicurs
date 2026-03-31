@@ -206,14 +206,23 @@
     });
   }
 
-  function initToggle() {
-    var btn = document.getElementById('true-distance-toggle');
-    if (!btn) return;
+  function syncTrueDistanceControls(isOn) {
+    document.querySelectorAll('[data-true-distance-toggle]').forEach(function (el) {
+      el.classList.toggle('is-active', isOn);
+      el.setAttribute('aria-pressed', isOn ? 'true' : 'false');
+    });
+  }
 
-    btn.addEventListener('click', function () {
-      isTrueDistance = !isTrueDistance;
-      btn.classList.toggle('is-active', isTrueDistance);
-      applyLayout();
+  function initToggle() {
+    var controls = document.querySelectorAll('[data-true-distance-toggle]');
+    if (!controls.length) return;
+
+    controls.forEach(function (btn) {
+      btn.addEventListener('click', function () {
+        isTrueDistance = !isTrueDistance;
+        syncTrueDistanceControls(isTrueDistance);
+        applyLayout();
+      });
     });
   }
 
