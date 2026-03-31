@@ -1,0 +1,19 @@
+[[headers]]
+  for = "/*"
+  [headers.values]
+    # Prevents other sites from embedding yours (Clickjacking protection)
+    X-Frame-Options = "DENY"
+    # Prevents browsers from guessing the MIME type
+    X-Content-Type-Options = "nosniff"
+    # Controls how much referrer information is passed to external links
+    Referrer-Policy = "strict-origin-when-cross-origin"
+    # Forces HTTPS connections
+    Strict-Transport-Security = "max-age=31536000; includeSubDomains; preload"
+    # Content Security Policy (Restricts where scripts/styles/images can be loaded from)
+    # NOTE: Three.js is imported via ES module `import` statements inside js/planet-*3d.js files.
+    # Browser SRI (integrity=) applies only to <script src> / <link rel=stylesheet> elements,
+    # NOT to dynamic import() or static import statements inside module scripts. This is a known
+    # web platform gap (see WICG/import-maps). Mitigation: cdn.jsdelivr.net is whitelisted here
+    # with a pinned semver (@0.167.1) and no user-controlled data is passed to innerHTML.
+    # Future recommendation: vendor Three.js locally to eliminate the CDN dependency entirely.
+    Content-Security-Policy = "default-src 'self'; script-src 'self' 'unsafe-inline' https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https://www.nasa.gov; connect-src 'self';"

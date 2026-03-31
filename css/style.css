@@ -588,8 +588,9 @@ body {
     height: min(100vmin, 600px);
   }
 
+  /* Ensure content clears the fixed footer (~70-80px) on all content pages */
   .content-section {
-    padding: 2rem 1rem;
+    padding: 2rem 1rem 6rem;
   }
 
   .container {
@@ -636,6 +637,11 @@ body {
   .telemetry-btn-icon {
     display: none;
   }
+
+  /* View switcher is redundant on mobile — Real Scale link lives in the nav */
+  .view-switcher {
+    display: none;
+  }
 }
 
 @media (max-width: 600px) {
@@ -665,7 +671,7 @@ body {
   }
 
   .content-section {
-    padding: 1.5rem 0.75rem;
+    padding: 1.5rem 0.75rem 6rem;
   }
 
   .telemetry-bar {
@@ -680,6 +686,14 @@ body {
   .telemetry-btn {
     font-size: 0.5rem;
     padding: 0.35rem 0.8rem;
+  }
+
+  /* Ensure smallest planets meet 44px WCAG touch target minimum */
+  .planet-mercury,
+  .planet-uranus,
+  .planet-neptune {
+    min-width: 44px;
+    min-height: 44px;
   }
 }
 
@@ -1331,4 +1345,33 @@ body {
 .real-scale-page .telemetry-bar,
 .real-scale-page .telemetry-btn {
   pointer-events: auto;
+}
+
+/* ----- Mobile: zoom info box repositioned to bottom ----- */
+/*
+ * On small screens the left-side formula collapses to a negative max-width
+ * because the zoomed planet takes up most of the viewport width.
+ * Move the box to the bottom above the fixed footer instead.
+ */
+@media (max-width: 640px) {
+  .zoom-info-box {
+    top: auto;
+    bottom: 5rem; /* clears the fixed footer (~70px) */
+    left: 1rem;
+    right: 1rem;
+    transform: none;
+    max-width: none;
+    width: auto;
+  }
+}
+
+/* ----- Mobile landscape: reduce solar system vertical offset ----- */
+/*
+ * translate(-50%, -55%) pushes the system top above the viewport on short
+ * landscape screens (e.g. phone landscape at 375px height).
+ */
+@media (orientation: landscape) and (max-height: 500px) {
+  .solar-system {
+    transform: translate(-50%, -50%);
+  }
 }

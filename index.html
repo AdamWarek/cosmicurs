@@ -10,7 +10,7 @@
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
-  <span class="commit-version" aria-label="Git commit version">46cbfed</span>
+  <span class="commit-version" aria-label="Git commit version">64b0555</span>
   <header class="site-header">
     <nav class="nav" aria-label="Main navigation">
       <a href="index.html" class="nav-logo">Cosmos</a>
@@ -142,15 +142,17 @@
 
   <script src="js/main.js"></script>
   <script src="js/orbital-positions.js"></script>
-  <script src="js/sun3d.js" type="module"></script>
-  <script src="js/mercury3d.js" type="module"></script>
-  <script src="js/venus3d.js" type="module"></script>
-  <script src="js/earth3d.js" type="module"></script>
-  <script src="js/moon3d.js" type="module"></script>
-  <script src="js/mars3d.js" type="module"></script>
-  <script src="js/saturn3d.js" type="module"></script>
-  <script src="js/jupiter3d.js" type="module"></script>
-  <script src="js/uranus3d.js" type="module"></script>
-  <script src="js/neptune3d.js" type="module"></script>
+  <!-- crossorigin="anonymous" enables CORS mode, required for modules that
+       fetch sub-resources from cdn.jsdelivr.net (Three.js). -->
+  <script src="js/sun3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/mercury3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/venus3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/earth3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/moon3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/mars3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/saturn3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/jupiter3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/uranus3d.js" type="module" crossorigin="anonymous"></script>
+  <script src="js/neptune3d.js" type="module" crossorigin="anonymous"></script>
 </body>
 </html>

@@ -318,10 +318,26 @@
       textEl.textContent = '';
     }
 
+    var touchHideTimeout = null;
+
     document.querySelectorAll('.planet').forEach(function (planet) {
       var name = planet.getAttribute('aria-label') || 'Planet';
+
       planet.addEventListener('mouseenter', function () { showTag(name, planet); });
       planet.addEventListener('mouseleave', hideTag);
+
+      /* Touch: show tag on press, auto-hide after 1.5 s so the tap can
+       * still register as a click for the zoom interaction. */
+      planet.addEventListener('touchstart', function (e) {
+        if (touchHideTimeout) clearTimeout(touchHideTimeout);
+        showTag(name, planet);
+        touchHideTimeout = setTimeout(hideTag, 1500);
+      }, { passive: true });
+
+      planet.addEventListener('touchend', function () {
+        if (touchHideTimeout) clearTimeout(touchHideTimeout);
+        touchHideTimeout = setTimeout(hideTag, 1500);
+      }, { passive: true });
     });
   }
 
@@ -329,7 +345,13 @@
   function initNav() {
     const toggle = document.querySelector('.nav-toggle');
     const links = document.querySelector('.nav-links');
+    const nav = document.querySelector('.nav');
     if (!toggle || !links) return;
+
+    function closeNav() {
+      toggle.setAttribute('aria-expanded', 'false');
+      links.classList.remove('is-open');
+    }
 
     toggle.addEventListener('click', function () {
       const expanded = toggle.getAttribute('aria-expanded') === 'true';
@@ -338,11 +360,16 @@
     });
 
     links.querySelectorAll('.nav-link').forEach(function (link) {
-      link.addEventListener('click', function () {
-        toggle.setAttribute('aria-expanded', 'false');
-        links.classList.remove('is-open');
-      });
+      link.addEventListener('click', closeNav);
     });
+
+    /* Close menu when tapping outside the nav element on mobile.
+     * On desktop the toggle is display:none so is-open is never set — no-op. */
+    document.addEventListener('click', function (e) {
+      if (!links.classList.contains('is-open')) return;
+      if (nav && nav.contains(e.target)) return;
+      closeNav();
+    }, { passive: true });
   }
 
   function init() {
