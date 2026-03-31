@@ -345,7 +345,7 @@
   function initNav() {
     const toggle = document.querySelector('.nav-toggle');
     const links = document.querySelector('.nav-links');
-    const nav = document.querySelector('.nav');
+    const siteHeader = document.querySelector('.site-header');
     if (!toggle || !links) return;
 
     function closeNav() {
@@ -363,11 +363,10 @@
       link.addEventListener('click', closeNav);
     });
 
-    /* Close menu when tapping outside the nav element on mobile.
-     * On desktop the toggle is display:none so is-open is never set — no-op. */
+    /* Close menu when tapping outside the header (nav + view-switcher are siblings). */
     document.addEventListener('click', function (e) {
       if (!links.classList.contains('is-open')) return;
-      if (nav && nav.contains(e.target)) return;
+      if (siteHeader && siteHeader.contains(e.target)) return;
       closeNav();
     }, { passive: true });
   }

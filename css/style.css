@@ -638,9 +638,14 @@ body {
     display: none;
   }
 
-  /* View switcher is redundant on mobile — Real Scale link lives in the nav */
+  /* View switcher hidden on most pages; Real Scale nav link covers navigation */
   .view-switcher {
     display: none;
+  }
+
+  /* True Distance toggle must stay reachable on real-scale page */
+  .real-scale-page .view-switcher {
+    display: flex;
   }
 }
 
